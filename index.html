@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BINA Senior - SSCE Preparation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <meta
+      name="description"
+      content="BINA Senior - Advanced Online Preparation System for SSCE Students"
+    />
+    <link rel="apple-touch-icon" href="logo.png" />
+    <meta name="theme-color" content="#1e88e5" />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assistant.css" />
+  </head>
+  <body>
+    <div class="premium-badge">BINA Senior</div>
+
+    <!-- User Profile and Logout -->
+    <div class="user-profile">
+      <div class="user-avatar" id="user-avatar">U</div>
+      <span class="user-name" id="user-name">User</span>
+      <button class="logout-btn" id="logout-btn" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+
+    <!-- Assistant Toggle Button -->
+    <div class="assistant-toggle" id="assistant-toggle">
+      <i class="fas fa-robot"></i>
+      <i class="fas fa-times"></i>
+    </div>
+
+    <!-- BINA Senior Assistant (initially hidden) -->
+    <div class="bina-senior-assistant" id="bina-senior-assistant">
+      <div class="character-wrapper">
+        <img
+          src="assets/standing.png"
+          alt="BINA Senior Assistant"
+          class="bina-character"
+        />
+        <div class="speech-bubble" id="bina-senior-message">
+          Welcome to BINA Senior! I'm here to help you prepare for your SSCE
+          exams.
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="header">
+        <img src="logo.png" alt="BINA Senior Logo" /><br />
+        <h1>BINA Senior Preparation System</h1>
+        <div id="welcome-message">
+          <!-- Welcome message will be inserted here -->
+        </div>
+        <div class="premium-navigation">
+          <a href="analytics.html" class="nav-link">
+            <i class="fas fa-chart-line"></i> View Analytics
+          </a>
+          <a href="history.html" class="nav-link">
+            <i class="fas fa-history"></i> Exam History
+          </a>
+          <!-- <a href="resources.html" class="nav-link">
+            <i class="fas fa-book"></i> Study Resources
+          </a> -->
+        </div>
+      </div>
+
+      <!-- Stream Display (when already selected) -->
+      <div id="stream-display-container" style="display: none">
+        <div class="stream-display">
+          <h3>Your Stream</h3>
+          <div class="selected-stream-card">
+            <i id="stream-icon" class="fas fa-flask"></i>
+            <h3 id="stream-title">Science</h3>
+            <p id="stream-description">
+              Physics, Chemistry, Biology, Mathematics
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stream Selection (when not yet selected) -->
+      <div id="stream-selection-container" style="display: none">
+        <h3>Select Your Stream</h3>
+        <div class="stream-selection">
+          <div
+            class="stream-card"
+            data-stream="science"
+            onclick="selectStream('science')"
+          >
+            <i class="fas fa-flask"></i>
+            <h3>Science</h3>
+            <p>Physics, Chemistry, Biology, Mathematics</p>
+          </div>
+          <div
+            class="stream-card"
+            data-stream="arts"
+            onclick="selectStream('arts')"
+          >
+            <i class="fas fa-paint-brush"></i>
+            <h3>Arts</h3>
+            <p>Literature, History, Government, CRK/IRK</p>
+          </div>
+          <div
+            class="stream-card"
+            data-stream="commerce"
+            onclick="selectStream('commerce')"
+          >
+            <i class="fas fa-chart-line"></i>
+            <h3>Commerce</h3>
+            <p>Accounting, Commerce, Economics, Business Studies</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subject Selection -->
+      <div id="subject-selection-container" style="display: none">
+        <h3>Select a Subject to Begin Your Practice Exam</h3>
+        <div class="form-group">
+          <label for="subject">Select Subject:</label>
+          <select id="subject" class="form-control">
+            <!-- Options will be populated based on selected stream -->
+          </select>
+        </div>
+
+        <button
+          onclick="startExam()"
+          class="btn-primary"
+          data-action="start-exam"
+          aria-label="Begin Examination"
+        >
+          <i class="fas fa-play-circle"></i> Start Practice Exam
+        </button>
+      </div>
+
+      <div class="premium-features">
+        <h3><i class="fas fa-crown"></i> Premium Features Available</h3>
+        <div class="features-grid">
+          <div class="feature-item">
+            <i class="fa-solid fa-clipboard-question"></i>
+            <h4>SSCE Format</h4>
+            <p>Questions follow the exact SSCE examination format</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fa-solid fa-lightbulb"></i>
+            <h4>Smart Hints</h4>
+            <p>
+              Get strategic hints during practice exams<br />
+              (Limit: 5 per exam)
+            </p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-note-sticky"></i>
+            <h4>Detailed Explanations</h4>
+            <p>
+              Get comprehensive explanations for each question after completion.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Check if user is logged in
+      document.addEventListener("DOMContentLoaded", function () {
+        // Clear any existing exam data
+        localStorage.removeItem("examSubject");
+        localStorage.removeItem("examInProgress");
+        localStorage.removeItem("selectedStream");
+
+        const userName = localStorage.getItem("userName");
+        const userRole = localStorage.getItem("userRole");
+        const userFullName = localStorage.getItem("userFullName") || userName;
+        const userStream = localStorage.getItem("userStream");
+
+        if (!userName) {
+          // Redirect to login if no username is found
+          window.location.href = "login.html";
+          return;
+        }
+
+        // Redirect admin to admin dashboard
+        if (userRole === "admin") {
+          window.location.href = "admin/dashboard.html";
+          return;
+        }
+
+        // Check if user has a stream assigned
+        if (!userStream) {
+          // No stream assigned, redirect to login with error message
+          alert(
+            "Your account doesn't have a stream assigned. Please contact an administrator."
+          );
+          // Clear any user data
+          localStorage.removeItem("userName");
+          localStorage.removeItem("userRole");
+          localStorage.removeItem("userFullName");
+          // Redirect to login
+          window.location.href = "login.html";
+          return;
+        }
+
+        // Set up user profile display
+        const userAvatar = document.getElementById("user-avatar");
+        const userNameDisplay = document.getElementById("user-name");
+
+        // Set avatar initial
+        userAvatar.textContent = userFullName.charAt(0).toUpperCase();
+
+        // Set user name
+        userNameDisplay.textContent = userFullName;
+
+        // Display welcome message
+        const welcomeMessage = document.getElementById("welcome-message");
+        welcomeMessage.innerHTML = `<h2>Welcome to BINA, ${userFullName}!</h2>`;
+
+        // If user already has a stream preference, display it and don't allow changing
+        if (userStream) {
+          displayUserStream(userStream);
+        } else {
+          // Show stream selection if no stream is set
+          document.getElementById("stream-selection-container").style.display =
+            "block";
+        }
+
+        // Initialize Premium messages
+        initPremiumMessages();
+
+        // Set up logout button
+        document
+          .getElementById("logout-btn")
+          .addEventListener("click", function () {
+            // Clear user data from localStorage
+            localStorage.removeItem("userName");
+            localStorage.removeItem("userRole");
+            localStorage.removeItem("userFullName");
+            localStorage.removeItem("userStream");
+            localStorage.removeItem("examHistory");
+            localStorage.removeItem("examResponses");
+            localStorage.removeItem("examSubjectResult");
+            localStorage.removeItem("examClassResult");
+
+            // Redirect to login page
+            window.location.href = "login.html";
+          });
+      });
+
+      // Display user's stream (when already selected and unchangeable)
+      function displayUserStream(stream) {
+        // Show stream display container
+        document.getElementById("stream-display-container").style.display =
+          "block";
+
+        // Update stream display with user's stream
+        const streamIcon = document.getElementById("stream-icon");
+        const streamTitle = document.getElementById("stream-title");
+        const streamDescription = document.getElementById("stream-description");
+
+        // Set appropriate icon and description based on stream
+        if (stream === "science") {
+          streamIcon.className = "fas fa-flask";
+          streamTitle.textContent = "Science";
+          streamDescription.textContent =
+            "Physics, Chemistry, Biology, Mathematics";
+        } else if (stream === "arts") {
+          streamIcon.className = "fas fa-paint-brush";
+          streamTitle.textContent = "Arts";
+          streamDescription.textContent =
+            "Literature, History, Government, CRK/IRK";
+        } else if (stream === "commerce") {
+          streamIcon.className = "fas fa-chart-line";
+          streamTitle.textContent = "Commerce";
+          streamDescription.textContent =
+            "Accounting, Commerce, Economics, Business Studies";
+        }
+
+        // Save selected stream to localStorage
+        localStorage.setItem("selectedStream", stream);
+        localStorage.setItem("userStream", stream);
+
+        // Show subject selection
+        document.getElementById("subject-selection-container").style.display =
+          "block";
+
+        // Populate subject dropdown based on selected stream
+        populateSubjects(stream);
+      }
+
+      // Stream selection function
+      function selectStream(stream) {
+        // Save selected stream to localStorage
+        localStorage.setItem("selectedStream", stream);
+        localStorage.setItem("userStream", stream);
+
+        // Update UI to show selected stream
+        document.querySelectorAll(".stream-card").forEach((card) => {
+          if (card.dataset.stream === stream) {
+            card.classList.add("selected");
+          } else {
+            card.classList.remove("selected");
+          }
+        });
+
+        // Show subject selection
+        document.getElementById("subject-selection-container").style.display =
+          "block";
+
+        // Populate subject dropdown based on selected stream
+        populateSubjects(stream);
+      }
+
+      // Populate subjects based on stream
+      function populateSubjects(stream) {
+        const subjectSelect = document.getElementById("subject");
+        subjectSelect.innerHTML = ""; // Clear existing options
+
+        // Core subjects for all streams
+        const coreSubjects = [
+          { value: "English", label: "English Language" },
+          { value: "Mathematics", label: "Mathematics" },
+          { value: "Civic_Education", label: "Civic Education" },
+        ];
+
+        // Stream-specific subjects
+        let streamSubjects = [];
+
+        switch (stream) {
+          case "science":
+            streamSubjects = [
+              { value: "Physics", label: "Physics" },
+              { value: "Chemistry", label: "Chemistry" },
+              { value: "Biology", label: "Biology" },
+              { value: "Further_Mathematics", label: "Further Mathematics" },
+              { value: "Geography", label: "Geography" },
+              { value: "Agriculture", label: "Agriculture" },
+            ];
+            break;
+          case "arts":
+            streamSubjects = [
+              { value: "Literature", label: "Literature in English" },
+              { value: "Government", label: "Government" },
+              { value: "History", label: "History" },
+              { value: "Music", label: "Music" },
+              { value: "French", label: "French" },
+            ];
+            break;
+          case "commerce":
+            streamSubjects = [
+              { value: "Commerce", label: "Commerce" },
+              { value: "Financial_Accounting", label: "Financial Accounting" },
+              { value: "Government", label: "Government" },
+              { value: "Economics", label: "Economics" },
+              { value: "Geography", label: "Geography" },
+              { value: "Data_Processing", label: "Data Processing" },
+            ];
+            break;
+        }
+
+        // Create optgroup for core subjects
+        const coreGroup = document.createElement("optgroup");
+        coreGroup.label = "Core Subjects";
+
+        // Add core subjects to the group
+        coreSubjects.forEach((subject) => {
+          const option = document.createElement("option");
+          option.value = subject.value;
+          option.textContent = subject.label;
+          coreGroup.appendChild(option);
+        });
+
+        // Create optgroup for stream subjects
+        const streamGroup = document.createElement("optgroup");
+        streamGroup.label = `${
+          stream.charAt(0).toUpperCase() + stream.slice(1)
+        } Subjects`;
+
+        // Add stream subjects to the group
+        streamSubjects.forEach((subject) => {
+          const option = document.createElement("option");
+          option.value = subject.value;
+          option.textContent = subject.label;
+          streamGroup.appendChild(option);
+        });
+
+        // Add both groups to the select
+        subjectSelect.appendChild(coreGroup);
+        subjectSelect.appendChild(streamGroup);
+      }
+
+      // Premium Messages System
+      let premiumMessages = [];
+      let currentMessageIndex = 0;
+      let messageInterval;
+      let assistantVisible = false;
+
+      function initPremiumMessages() {
+        const userFullName =
+          localStorage.getItem("userFullName") ||
+          localStorage.getItem("userName") ||
+          "Student";
+        const userStream = localStorage.getItem("selectedStream") || "student";
+
+        // Personalized messages for Premium users
+        premiumMessages = [
+          `Welcome back, ${userFullName}! Ready to ace your SSCE exams?`,
+          `${userFullName}, I'm Tutor, your personal study assistant for ${userStream} subjects!`,
+          `${userFullName}, use the detailed explanations to master difficult concepts.`,
+          `${userFullName}, did you know you can track your progress in the Analytics section?`,
+          `Thanks for choosing BINA Senior, ${userFullName}! We're here to help you succeed.`,
+          `${userFullName}, you're making great progress in your SSCE preparation!`,
+          `Need help with a subject? Try focusing on the explanations after each question.`,
+          `${userFullName}, your Premium account gives you access to past SSCE questions.`,
+          `We appreciate your dedication, ${userFullName}! Consistent practice leads to success.`,
+          `${userFullName}, remember to check your exam history to track your improvement.`,
+          `Premium users like you, ${userFullName}, get 60 minutes for each practice exam.`,
+          `${userFullName}, try our detailed analytics to identify your strengths and weaknesses.`,
+          `Thanks for choosing BINA Senior, ${userFullName}! We're constantly adding new features.`,
+          `${userFullName}, you're now getting the full SSCE preparation experience!`,
+          `We're glad you're here, ${userFullName}! Let us know if you have any feature suggestions.`,
+        ];
+
+        // Display first message
+        const messageElement = document.getElementById("bina-senior-message");
+        messageElement.textContent = premiumMessages[0];
+
+        // Set up toggle button
+        document
+          .getElementById("assistant-toggle")
+          .addEventListener("click", toggleAssistant);
+
+        // Make character clickable to show next message immediately
+        document
+          .querySelector(".bina-character")
+          .addEventListener("click", () => {
+            showNextMessage();
+          });
+      }
+
+      function toggleAssistant() {
+        const assistant = document.getElementById("bina-senior-assistant");
+        const toggle = document.getElementById("assistant-toggle");
+
+        if (assistantVisible) {
+          // Hide assistant
+          assistant.classList.remove("visible");
+          toggle.classList.remove("active");
+
+          // Clear the message interval
+          clearInterval(messageInterval);
+        } else {
+          // Show assistant
+          assistant.classList.add("visible");
+          toggle.classList.add("active");
+
+          // Reset message opacity
+          document.getElementById("bina-senior-message").style.opacity = 1;
+
+          // Start message rotation - every 5 seconds
+          messageInterval = setInterval(() => {
+            showNextMessage();
+          }, 5000); // 5 seconds
+        }
+
+        assistantVisible = !assistantVisible;
+      }
+
+      function showNextMessage() {
+        currentMessageIndex =
+          (currentMessageIndex + 1) % premiumMessages.length;
+        const messageElement = document.getElementById("bina-senior-message");
+
+        // Fade out
+        messageElement.style.opacity = 0;
+
+        // Change text and fade in after a short delay
+        setTimeout(() => {
+          messageElement.textContent = premiumMessages[currentMessageIndex];
+          messageElement.style.opacity = 1;
+        }, 500);
+      }
+
+      function startExam() {
+        const subject = document.getElementById("subject").value;
+        const stream = localStorage.getItem("selectedStream");
+
+        if (!subject) {
+          alert("Please select a subject.");
+          return;
+        }
+
+        if (!stream) {
+          alert("Please select a stream first.");
+          return;
+        }
+
+        // Store selections in localStorage with clear values
+        localStorage.setItem("examStream", stream);
+        localStorage.setItem("examSubject", subject);
+        localStorage.setItem("examVersion", "premium"); // Mark as premium version
+
+        // Add a flag to indicate exam is in progress
+        localStorage.setItem("examInProgress", "true");
+
+        console.log("Exam details stored:", {
+          stream: localStorage.getItem("examStream"),
+          subject: localStorage.getItem("examSubject"),
+        });
+
+        // Redirect to questions page
+        window.location.href = "questions.html";
+      }
+    </script>
+  </body>
+</html>

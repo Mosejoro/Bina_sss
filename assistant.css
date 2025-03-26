@@ -1,0 +1,197 @@
+/* BINA Senior Assistant Styling */
+.bina-senior-assistant {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.bina-senior-assistant.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.bina-senior-assistant .character-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.bina-senior-assistant .bina-character {
+  width: 120px;
+  height: auto;
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.bina-senior-assistant .bina-character:hover {
+  transform: scale(1.05);
+}
+
+/* Enhanced Speech Bubble */
+.speech-bubble {
+  position: absolute;
+  left: 130px;
+  bottom: 60px;
+  opacity: 0;
+  transform: translateX(-20px) scale(0.95);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.bina-senior-assistant.visible .speech-bubble {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.speech-bubble {
+  position: relative;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 15px;
+  min-width: 200px;
+  max-width: 300px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 3px 5px rgba(0, 0, 0, 0.05),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.05);
+  border: 2px solid #1e88e5;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  background: linear-gradient(to bottom, #ffffff, #f9f9f9);
+}
+
+/* Speech bubble tail */
+.speech-bubble:before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  bottom: 25px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 15px 15px 15px 0;
+  border-color: transparent #1e88e5 transparent transparent;
+  filter: drop-shadow(-3px 2px 2px rgba(0, 0, 0, 0.05));
+}
+
+.speech-bubble:after {
+  content: "";
+  position: absolute;
+  left: -12px;
+  bottom: 25px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 15px 15px 15px 0;
+  border-color: transparent #ffffff transparent transparent;
+}
+
+/* Assistant toggle button */
+.assistant-toggle {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #1e88e5;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.assistant-toggle:hover {
+  transform: scale(1.1);
+}
+
+.assistant-toggle i {
+  color: white;
+  font-size: 24px;
+  transition: transform 0.5s ease;
+}
+
+.assistant-toggle.active {
+  background-color: #e74c3c;
+}
+
+.assistant-toggle .fa-robot {
+  opacity: 1;
+  position: absolute;
+  transition: opacity 0.3s ease, transform 0.5s ease;
+}
+
+.assistant-toggle .fa-times {
+  opacity: 0;
+  position: absolute;
+  transition: opacity 0.3s ease, transform 0.5s ease;
+  transform: rotate(-180deg);
+}
+
+.assistant-toggle.active .fa-robot {
+  opacity: 0;
+  transform: rotate(180deg);
+}
+
+.assistant-toggle.active .fa-times {
+  opacity: 1;
+  transform: rotate(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .bina-senior-assistant .bina-character {
+    width: 90px;
+  }
+
+  .speech-bubble-container {
+    left: 100px;
+  }
+
+  .speech-bubble {
+    min-width: 180px;
+    max-width: 220px;
+    padding: 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bina-senior-assistant .bina-character {
+    width: 70px;
+  }
+
+  .speech-bubble-container {
+    left: 80px;
+    bottom: 40px;
+  }
+
+  .speech-bubble {
+    min-width: 150px;
+    max-width: 180px;
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .speech-bubble:before {
+    bottom: 15px;
+    border-width: 10px 10px 10px 0;
+    left: -10px;
+  }
+
+  .speech-bubble:after {
+    bottom: 15px;
+    border-width: 10px 10px 10px 0;
+    left: -8px;
+  }
+}

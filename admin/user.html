@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BINA Senior - User Management</title>
+<link rel="stylesheet" href="../admin-styles.css" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <img src="../logo.png" alt="BINA Senior" />
+    <h3>Admin Panel</h3>
+  </div>
+  <ul class="sidebar-menu">
+    <li>
+      <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    </li>
+    <li class="active">
+      <a href="users.html"><i class="fas fa-users"></i> User Management</a>
+    </li>
+    <li>
+      <a href="access-codes.html"><i class="fas fa-key"></i> Access Codes</a>
+    </li>
+    <li>
+      <a href="results.html"><i class="fas fa-chart-bar"></i> Exam Results</a>
+    </li>
+    <li>
+      <a href="questions.html"><i class="fas fa-question-circle"></i> Question Bank</a>
+    </li>
+    <li>
+      <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+    </li>
+    <li class="logout">
+      <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </li>
+  </ul>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div class="top-bar">
+    <button class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="user-info">
+      <span id="adminName">Admin</span>
+      <i class="fas fa-user-shield"></i>
+    </div>
+  </div>
+
+  <div class="content">
+    <h1>User Management</h1>
+    <p class="subtitle">Manage student accounts and access</p>
+
+    <div class="action-bar">
+      <button class="btn btn-primary" id="addUserBtn">
+        <i class="fas fa-user-plus"></i> Add New User
+      </button>
+      <div class="search-box">
+        <input type="text" id="searchUsers" placeholder="Search users..." />
+        <i class="fas fa-search"></i>
+      </div>
+    </div>
+
+    <!-- Stream Filter -->
+    <div class="stream-filter" style="margin-bottom: 20px;">
+      <span style="margin-right: 10px; font-weight: 500;">Filter by Stream:</span>
+      <button class="btn btn-secondary stream-filter-btn active" data-stream="all">All</button>
+      <button class="btn btn-secondary stream-filter-btn" data-stream="science">Science</button>
+      <button class="btn btn-secondary stream-filter-btn" data-stream="arts">Arts</button>
+      <button class="btn btn-secondary stream-filter-btn" data-stream="commerce">Commerce</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Stream</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersList">
+          <tr>
+            <td colspan="6" class="loading-data">Loading users...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal" id="addUserModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add New User</h2>
+      <button class="close-btn" id="closeAddUserModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="addUserForm">
+        <div class="form-group">
+          <label for="newUserFullName">Full Name</label>
+          <input type="text" id="newUserFullName" required />
+        </div>
+        <div class="form-group">
+          <label for="newUserEmail">Email</label>
+          <input type="email" id="newUserEmail" required />
+        </div>
+        <div class="form-group">
+          <label for="newUserPassword">Password</label>
+          <input type="password" id="newUserPassword" required />
+        </div>
+        <div class="form-group">
+          <label for="newUserStream">Stream</label>
+          <select id="newUserStream" required>
+            <option value="">Select Stream</option>
+            <option value="science">Science</option>
+            <option value="arts">Arts</option>
+            <option value="commerce">Commerce</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="newUserRole">Role</label>
+          <select id="newUserRole" required>
+            <option value="student">Student</option>
+            <option value="admin">Administrator</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="cancelAddUser">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-user-plus"></i> Add User
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal" id="editUserModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Edit User</h2>
+      <button class="close-btn" id="closeEditUserModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="editUserForm">
+        <input type="hidden" id="editUserId" />
+        <div class="form-group">
+          <label for="editUserFullName">Full Name</label>
+          <input type="text" id="editUserFullName" required />
+        </div>
+        <div class="form-group">
+          <label for="editUserEmail">Email</label>
+          <input type="email" id="editUserEmail" required disabled />
+        </div>
+        <div class="form-group">
+          <label for="editUserStream">Stream</label>
+          <select id="editUserStream" required>
+            <option value="science">Science</option>
+            <option value="arts">Arts</option>
+            <option value="commerce">Commerce</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="editUserRole">Role</label>
+          <select id="editUserRole" required>
+            <option value="student">Student</option>
+            <option value="admin">Administrator</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="editUserStatus">Status</label>
+          <select id="editUserStatus" required>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="cancelEditUser">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyCS1WkhpFPuUy46PEkKLtoqeVQ4lUZyRkU",
+    authDomain: "bina-secondary.firebaseapp.com",
+    projectId: "bina-secondary",
+    storageBucket: "bina-secondary.firebasestorage.app",
+    messagingSenderId: "373949569768",
+    appId: "1:373949569768:web:9c17c253364b87209c075d",
+    measurementId: "G-0G3XEY2GXN",
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Get references to Firebase services
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // Check if user is logged in and is an admin
+  document.addEventListener("DOMContentLoaded", function () {
+    // First check if we have admin data in localStorage
+    const storedUserRole = localStorage.getItem("userRole");
+    const storedUserName = localStorage.getItem("userName");
+    
+    if (storedUserRole === "admin" && storedUserName) {
+      // We have admin data in localStorage, display the admin name
+      document.getElementById("adminName").textContent = 
+        localStorage.getItem("userFullName") || storedUserName || "Admin";
+      
+      // Load users data
+      loadUsers();
+    }
+    
+    // Also verify with Firebase Auth (more secure)
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
+        // User is signed in, check if admin
+        db.collection("users")
+          .doc(user.uid)
+          .get()
+          .then((doc) => {
+            if (doc.exists && doc.data().role === "admin") {
+              // User is an admin
+              // Update localStorage with latest data
+              localStorage.setItem("userName", doc.data().username || "admin");
+              localStorage.setItem("userFullName", doc.data().fullName || doc.data().username || "Admin");
+              localStorage.setItem("userRole", "admin");
+              
+              document.getElementById("adminName").textContent =
+                doc.data().fullName || doc.data().username || "Admin";
+              
+              // Load users data if not already loaded
+              loadUsers();
+            } else {
+              // Not an admin, redirect to login
+              console.log("Not an admin, redirecting to login");
+              localStorage.removeItem("userRole");
+              localStorage.removeItem("userName");
+              localStorage.removeItem("userFullName");
+              window.location.href = "../admin-login.html";
+            }
+          })
+          .catch((error) => {
+            console.error("Error checking admin status:", error);
+            window.location.href = "../admin-login.html";
+          });
+      } else {
+        // No user is signed in, check if we have admin data in localStorage
+        if (storedUserRole !== "admin") {
+          // No admin data, redirect to login
+          console.log("No user signed in, redirecting to login");
+          window.location.href = "../admin-login.html";
+        }
+      }
+    });
+    
+    // Set up stream filter buttons
+    setupStreamFilterButtons();
+  });
+
+  // Logout functionality
+  document.getElementById("logoutBtn").addEventListener("click", function (e) {
+    e.preventDefault();
+    auth
+      .signOut()
+      .then(() => {
+        // Clear local storage
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userFullName");
+        // Redirect to login page
+        window.location.href = "../admin-login.html";
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+      });
+  });
+
+  // Toggle sidebar on mobile
+  document.getElementById("menuToggle").addEventListener("click", function () {
+    document.querySelector(".sidebar").classList.toggle("active");
+  });
+
+  // Setup stream filter buttons
+  function setupStreamFilterButtons() {
+    const filterButtons = document.querySelectorAll('.stream-filter-btn');
+    
+    filterButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        // Remove active class from all buttons
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        // Get the stream to filter by
+        const stream = this.dataset.stream;
+        
+        // Filter the users list
+        filterUsersByStream(stream);
+      });
+    });
+  }
+
+  // Filter users by stream
+  function filterUsersByStream(stream) {
+    const rows = document.querySelectorAll('#usersList tr');
+    
+    rows.forEach(row => {
+      if (stream === 'all') {
+        row.style.display = '';
+      } else {
+        const userStream = row.dataset.stream;
+        if (userStream === stream) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      }
+    });
+  }
+
+  // Load users
+  function loadUsers() {
+    const usersListElement = document.getElementById("usersList");
+    
+    db.collection("users")
+      .get()
+      .then((querySnapshot) => {
+        if (querySnapshot.empty) {
+          usersListElement.innerHTML = `
+            <tr>
+              <td colspan="6" class="no-data">No users found</td>
+            </tr>
+          `;
+          return;
+        }
+
+        // Clear loading message
+        usersListElement.innerHTML = "";
+
+        // Add users to table
+        querySnapshot.forEach((doc) => {
+          const userData = doc.data();
+          const status = userData.status || "active";
+          const statusClass = status === "active" ? "status-active" : "status-inactive";
+          const stream = userData.stream || "N/A";
+          
+          usersListElement.innerHTML += `
+            <tr data-id="${doc.id}" data-stream="${stream}">
+              <td>${userData.fullName || userData.username || "Unknown"}</td>
+              <td>${userData.email || "Unknown"}</td>
+              <td>${stream.charAt(0).toUpperCase() + stream.slice(1)}</td>
+              <td>${userData.role || "student"}</td>
+              <td><span class="status-badge ${statusClass}">${status}</span></td>
+              <td class="actions">
+                <button class="action-btn edit-btn" data-id="${doc.id}">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="action-btn delete-btn" data-id="${doc.id}">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+        // Add event listeners to edit and delete buttons
+        addActionButtonListeners();
+      })
+      .catch((error) => {
+        console.error("Error getting users:", error);
+        usersListElement.innerHTML = `
+          <tr>
+            <td colspan="6" class="error-data">Error loading users: ${error.message}</td>
+          </tr>
+        `;
+      });
+  }
+
+  // Add event listeners to action buttons
+  function addActionButtonListeners() {
+    // Edit buttons
+    document.querySelectorAll(".edit-btn").forEach((button) => {
+      button.addEventListener("click", function () {
+        const userId = this.getAttribute("data-id");
+        openEditUserModal(userId);
+      });
+    });
+
+    // Delete buttons
+    document.querySelectorAll(".delete-btn").forEach((button) => {
+      button.addEventListener("click", function () {
+        const userId = this.getAttribute("data-id");
+        if (confirm("Are you sure you want to delete this user?")) {
+          deleteUser(userId);
+        }
+      });
+    });
+  }
+
+  // Open edit user modal
+  function openEditUserModal(userId) {
+    db.collection("users")
+      .doc(userId)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          const userData = doc.data();
+          
+          // Populate form fields
+          document.getElementById("editUserId").value = userId;
+          document.getElementById("editUserFullName").value = userData.fullName || userData.username || "";
+          document.getElementById("editUserEmail").value = userData.email || "";
+          document.getElementById("editUserStream").value = userData.stream || "science";
+          document.getElementById("editUserRole").value = userData.role || "student";
+          document.getElementById("editUserStatus").value = userData.status || "active";
+          
+          // Show modal
+          document.getElementById("editUserModal").style.display = "block";
+        } else {
+          alert("User not found!");
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting user:", error);
+        alert("Error getting user: " + error.message);
+      });
+  }
+
+  // Delete user
+  function deleteUser(userId) {
+    // First get the user's email to remove from authorized_users
+    db.collection("users")
+      .doc(userId)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          const userEmail = doc.data().email;
+          
+          // Delete from users collection
+          return db.collection("users").doc(userId).delete().then(() => {
+            // Also remove from authorized_users collection
+            return db.collection("access_codes")
+              .where("usedBy", "==", userEmail)
+              .get()
+              .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                  doc.ref.update({
+                    used: false,
+                    usedBy: null,
+                    usedAt: null
+                  });
+                });
+              });
+          });
+        }
+      })
+      .then(() => {
+        alert("User deleted successfully!");
+        loadUsers(); // Reload users list
+      })
+      .catch((error) => {
+        console.error("Error deleting user:", error);
+        alert("Error deleting user: " + error.message);
+      });
+  }
+
+  // Add User Modal
+  const addUserModal = document.getElementById("addUserModal");
+  const addUserBtn = document.getElementById("addUserBtn");
+  const closeAddUserModal = document.getElementById("closeAddUserModal");
+  const cancelAddUser = document.getElementById("cancelAddUser");
+
+  addUserBtn.addEventListener("click", function () {
+    addUserModal.style.display = "block";
+  });
+
+  closeAddUserModal.addEventListener("click", function () {
+    addUserModal.style.display = "none";
+  });
+
+  cancelAddUser.addEventListener("click", function () {
+    addUserModal.style.display = "none";
+  });
+
+  // Edit User Modal
+  const editUserModal = document.getElementById("editUserModal");
+  const closeEditUserModal = document.getElementById("closeEditUserModal");
+  const cancelEditUser = document.getElementById("cancelEditUser");
+
+  closeEditUserModal.addEventListener("click", function () {
+    editUserModal.style.display = "none";
+  });
+
+  cancelEditUser.addEventListener("click", function () {
+    editUserModal.style.display = "none";
+  });
+
+  // Add User Form Submission
+  document.getElementById("addUserForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    
+    const fullName = document.getElementById("newUserFullName").value;
+    const email = document.getElementById("newUserEmail").value;
+    const password = document.getElementById("newUserPassword").value;
+    const stream = document.getElementById("newUserStream").value;
+    const role = document.getElementById("newUserRole").value;
+    
+    // Create the user in Firebase Auth
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Add user data to Firestore
+        return db.collection("users").doc(userCredential.user.uid).set({
+          username: email.split('@')[0],
+          fullName: fullName,
+          email: email,
+          stream: stream,
+          role: role,
+          status: "active",
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      })
+      .then(() => {
+        alert("User added successfully!");
+        addUserModal.style.display = "none";
+        document.getElementById("addUserForm").reset();
+        loadUsers(); // Reload users list
+      })
+      .catch((error) => {
+        console.error("Error adding user:", error);
+        alert("Error adding user: " + error.message);
+      });
+  });
+
+  // Edit User Form Submission
+  document.getElementById("editUserForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    
+    const userId = document.getElementById("editUserId").value;
+    const fullName = document.getElementById("editUserFullName").value;
+    const stream = document.getElementById("editUserStream").value;
+    const role = document.getElementById("editUserRole").value;
+    const status = document.getElementById("editUserStatus").value;
+    
+    db.collection("users").doc(userId).update({
+      fullName: fullName,
+      stream: stream,
+      role: role,
+      status: status,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+      alert("User updated successfully!");
+      editUserModal.style.display = "none";
+      loadUsers(); // Reload users list
+    })
+    .catch((error) => {
+      console.error("Error updating user:", error);
+      alert("Error updating user: " + error.message);
+    });
+  });
+
+  // Search functionality
+  document.getElementById("searchUsers").addEventListener("keyup", function () {
+    const searchValue = this.value.toLowerCase();
+    const rows = document.querySelectorAll("#usersList tr");
+    
+    rows.forEach((row) => {
+      const text = row.textContent.toLowerCase();
+      if (text.includes(searchValue)) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    });
+  });
+</script>
+</body>
+</html>
+

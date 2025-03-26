@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BINA Senior - Practice Exam</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="favicon.png" />
+    <meta
+      name="description"
+      content="BINA Senior - SSCE Practice Examination System"
+    />
+    <link rel="apple-touch-icon" href="logo.png" />
+    <meta name="theme-color" content="#1e88e5" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="premium-badge">Premium Version</div>
+
+    <div class="container">
+      <div
+        id="exam-info"
+        class="header"
+        role="region"
+        aria-labelledby="exam-details"
+      ></div>
+
+      <div class="progress-bar">
+        <div class="progress-bar-fill" style="width: 0%"></div>
+      </div>
+
+      <div id="questions">
+        <div class="loading"></div>
+      </div>
+    </div>
+
+    <div class="timer">
+      <span class="timer-icon">⏱</span>
+      <span id="time-remaining">00:00</span>
+    </div>
+    <script src="script.js"></script>
+    <script>
+      // Auto-load questions when page loads
+      window.addEventListener("load", () => {
+        console.log("Questions page loaded");
+
+        // Check if user is logged in
+        const userName = localStorage.getItem("userName");
+        const userFullName = localStorage.getItem("userFullName") || userName;
+        console.log("User name from localStorage:", userFullName);
+
+        if (!userName) {
+          console.log("No username found, redirecting to login");
+          alert("Please log in first");
+          window.location.href = "login.html";
+          return;
+        }
+
+        // Get stored exam details
+        const subject = localStorage.getItem("examSubject");
+        const stream = localStorage.getItem("examStream");
+
+        console.log("Exam details retrieved:", { stream, subject });
+
+        if (!subject || !stream) {
+          console.log("Missing exam details, redirecting to index");
+          alert("Please select exam details first");
+          window.location.href = "index.html";
+          return;
+        }
+
+        // Display exam info
+        document.getElementById("exam-info").innerHTML = `
+      <img src="logo.png" alt="BINA Senior Logo">
+      <h3 class="head">Student: ${userFullName}</h3>
+      <h3 class="head">Subject: ${subject.replace(/_/g, " ")}</h3>
+      <h3 class="head">Stream: ${
+        stream.charAt(0).toUpperCase() + stream.slice(1)
+      }</h3>
+      <h2 class="Warn">IF THIS INFORMATION IS WRONG <a class="btn-link" href="index.html"> Go Back</a></h2>
+    `;
+
+        // Auto fetch questions
+        fetchQuestions(stream, subject);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BINA Senior - Sign Up</title>
+    <link rel="stylesheet" href="auth-styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Background decorative elements -->
+    <div class="bg-circle bg-circle-1"></div>
+    <div class="bg-circle bg-circle-2"></div>
+
+    <div class="container">
+      <!-- BINA Senior Logo -->
+      <img src="logo.png" alt="BINA Senior" class="logo" />
+      <h2>Create Account</h2>
+      <form id="signupForm">
+        <div class="input-group">
+          <input type="text" id="signupFullName" placeholder=" " required />
+          <label for="signupFullName"
+            ><i class="fas fa-user"></i> Full Name</label
+          >
+        </div>
+        <div class="input-group">
+          <input type="email" id="signupEmail" placeholder=" " required />
+          <label for="signupEmail"><i class="fas fa-envelope"></i> Email</label>
+        </div>
+        <div class="input-group">
+          <input type="password" id="signupPassword" placeholder=" " required />
+          <label for="signupPassword"
+            ><i class="fas fa-lock"></i> Password</label
+          >
+        </div>
+        <div class="input-group">
+          <select id="signupStream" placeholder=" " required>
+            <option value="" disabled selected></option>
+            <option value="science">Science</option>
+            <option value="arts">Arts</option>
+            <option value="commerce">Commerce</option>
+          </select>
+          <label for="signupStream"
+            ><i class="fas fa-graduation-cap"></i> Stream</label
+          >
+        </div>
+        <div class="input-group">
+          <input type="text" id="accessCode" placeholder=" " required />
+          <label for="accessCode"><i class="fas fa-key"></i> Access Code</label>
+        </div>
+        <button type="submit"><i class="fas fa-user-plus"></i> Sign Up</button>
+      </form>
+      <p class="alt-link">
+        Already have an account? <a href="login.html">Login</a>
+      </p>
+      <p class="message" id="signupMessage"></p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+    <script>
+      // Your Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCS1WkhpFPuUy46PEkKLtoqeVQ4lUZyRkU",
+        authDomain: "bina-secondary.firebaseapp.com",
+        projectId: "bina-secondary",
+        storageBucket: "bina-secondary.firebasestorage.app",
+        messagingSenderId: "373949569768",
+        appId: "1:373949569768:web:9c17c253364b87209c075d",
+        measurementId: "G-0G3XEY2GXN",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Get references to Firebase services
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      // Clear any existing login state when the signup page loads
+      function clearLoginState() {
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userFullName");
+        localStorage.removeItem("userStream");
+        // Sign out any existing user session
+        auth.signOut().catch((error) => {
+          console.log("Sign out error:", error);
+        });
+      }
+
+      // Run on page load to ensure fresh signup
+      clearLoginState();
+
+      // Signup form submission
+      document
+        .getElementById("signupForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const fullName = document.getElementById("signupFullName").value;
+          const email = document.getElementById("signupEmail").value;
+          const password = document.getElementById("signupPassword").value;
+          const stream = document.getElementById("signupStream").value;
+          const accessCode = document.getElementById("accessCode").value;
+          const messageElement = document.getElementById("signupMessage");
+
+          // Show loading state
+          document.querySelector("button").innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+          document.querySelector("button").disabled = true;
+
+          // First check if the access code is valid
+          db.collection("access_codes")
+            .where("code", "==", accessCode)
+            .where("used", "==", false)
+            .get()
+            .then((querySnapshot) => {
+              if (querySnapshot.empty) {
+                // Access code not found or already used
+                throw new Error(
+                  "Invalid or already used access code. Please contact your administrator."
+                );
+              }
+
+              // Access code is valid, proceed with account creation
+              return auth.createUserWithEmailAndPassword(email, password);
+            })
+            .then((userCredential) => {
+              // User created successfully
+              const user = userCredential.user;
+
+              // Mark the access code as used
+              return db
+                .collection("access_codes")
+                .where("code", "==", accessCode)
+                .get()
+                .then((querySnapshot) => {
+                  querySnapshot.forEach((doc) => {
+                    doc.ref.update({
+                      used: true,
+                      usedBy: email,
+                      usedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    });
+                  });
+                })
+                .then(() => {
+                  // Add user data to Firestore
+                  return db
+                    .collection("users")
+                    .doc(user.uid)
+                    .set({
+                      username: email.split("@")[0],
+                      fullName: fullName,
+                      email: email,
+                      stream: stream,
+                      role: "student",
+                      createdAt:
+                        firebase.firestore.FieldValue.serverTimestamp(),
+                    });
+                });
+            })
+            .then(() => {
+              messageElement.textContent =
+                "Account created successfully! Redirecting to login...";
+              messageElement.style.color = "green";
+
+              // Redirect to login page after successful signup
+              setTimeout(() => {
+                window.location.href = "login.html";
+              }, 2000);
+            })
+            .catch((error) => {
+              console.error("Signup error:", error);
+              messageElement.textContent = error.message;
+              messageElement.style.color = "red";
+              // Reset button
+              document.querySelector("button").innerHTML =
+                '<i class="fas fa-user-plus"></i> Sign Up';
+              document.querySelector("button").disabled = false;
+            });
+        });
+    </script>
+  </body>
+</html>

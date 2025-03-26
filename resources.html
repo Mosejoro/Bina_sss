@@ -1,0 +1,3010 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BINA Senior - Study Resources</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <meta
+      name="description"
+      content="BINA Senior - Study Resources for SSCE Preparation"
+    />
+    <link rel="apple-touch-icon" href="logo.png" />
+    <meta name="theme-color" content="#1e88e5" />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <style>
+      /* Additional styles for resources page */
+      .resources-container {
+        margin-top: 2rem;
+      }
+
+      .resource-tabs {
+        display: flex;
+        border-bottom: 1px solid #e0e0e0;
+        margin-bottom: 1.5rem;
+        overflow-x: auto;
+        padding-bottom: 5px;
+      }
+
+      .resource-tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--text-color);
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+      }
+
+      .resource-tab:hover {
+        color: var(--primary-color);
+      }
+
+      .resource-tab.active {
+        color: var(--primary-color);
+        border-bottom-color: var(--primary-color);
+      }
+
+      .resource-content {
+        display: none;
+      }
+
+      .resource-content.active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .filter-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .subject-filter {
+        flex: 1;
+        min-width: 200px;
+      }
+
+      .subject-filter select {
+        width: 100%;
+        padding: 10px;
+        border-radius: var(--border-radius);
+        border: 1px solid #e0e0e0;
+        background-color: white;
+      }
+
+      .search-resources {
+        flex: 1;
+        min-width: 200px;
+        position: relative;
+      }
+
+      .search-resources input {
+        width: 100%;
+        padding: 10px 15px 10px 40px;
+        border-radius: var(--border-radius);
+        border: 1px solid #e0e0e0;
+        background-color: white;
+      }
+
+      .search-resources i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+      }
+
+      .resource-card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .resource-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+      }
+
+      .resource-header {
+        padding: 1.25rem;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .resource-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .resource-title i {
+        color: var(--primary-color);
+        font-size: 1.2rem;
+      }
+
+      .resource-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .resource-action-btn {
+        background: none;
+        border: none;
+        color: #666;
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 5px;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+      }
+
+      .resource-action-btn:hover {
+        background: #f5f5f5;
+        color: var(--primary-color);
+      }
+
+      .resource-action-btn.bookmarked {
+        color: var(--primary-color);
+      }
+
+      .resource-body {
+        padding: 1.25rem;
+      }
+
+      .resource-meta {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      .resource-meta span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .resource-description {
+        margin-bottom: 15px;
+        line-height: 1.6;
+      }
+
+      .resource-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 15px;
+      }
+
+      .resource-tag {
+        background: #f0f7ff;
+        color: var(--primary-color);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .resource-actions-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .resource-btn {
+        padding: 8px 15px;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .resource-btn-primary {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+      }
+
+      .resource-btn-primary:hover {
+        background: var(--primary-dark);
+      }
+
+      .resource-btn-secondary {
+        background: #f5f5f5;
+        color: var(--text-color);
+        border: 1px solid #e0e0e0;
+      }
+
+      .resource-btn-secondary:hover {
+        background: #e9e9e9;
+      }
+
+      .video-container {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+        margin-bottom: 15px;
+        border-radius: var(--border-radius);
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .resource-accordion {
+        border: 1px solid #e0e0e0;
+        border-radius: var(--border-radius);
+        margin-bottom: 15px;
+        overflow: hidden;
+      }
+
+      .accordion-header {
+        padding: 15px;
+        background: #f9f9f9;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 500;
+        transition: background 0.2s ease;
+      }
+
+      .accordion-header:hover {
+        background: #f0f0f0;
+      }
+
+      .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .accordion-content.active {
+        max-height: 1000px;
+      }
+
+      .accordion-inner {
+        padding: 15px;
+        line-height: 1.6;
+      }
+
+      .flashcard-container {
+        perspective: 1000px;
+        margin-bottom: 20px;
+      }
+
+      .flashcard {
+        width: 100%;
+        height: 200px;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s;
+        cursor: pointer;
+      }
+
+      .flashcard.flipped {
+        transform: rotateY(180deg);
+      }
+
+      .flashcard-front,
+      .flashcard-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: var(--border-radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .flashcard-front {
+        background: linear-gradient(135deg, #1e88e5, #1565c0);
+        color: white;
+        font-weight: 600;
+        font-size: 1.2rem;
+      }
+
+      .flashcard-back {
+        background: white;
+        border: 2px solid #1e88e5;
+        transform: rotateY(180deg);
+        font-size: 1rem;
+        line-height: 1.6;
+        overflow-y: auto;
+      }
+
+      .flashcard-navigation {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .flashcard-nav-btn {
+        background: #f0f0f0;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .flashcard-nav-btn:hover {
+        background: #e0e0e0;
+      }
+
+      .flashcard-counter {
+        display: flex;
+        align-items: center;
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      .quiz-question {
+        margin-bottom: 20px;
+      }
+
+      .quiz-options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .quiz-option {
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .quiz-option:hover {
+        background: #f5f5f5;
+      }
+
+      .quiz-option.selected {
+        background: rgba(30, 136, 229, 0.1);
+        border-color: var(--primary-color);
+      }
+
+      .quiz-option.correct {
+        background: rgba(76, 175, 80, 0.1);
+        border-color: var(--success-green);
+      }
+
+      .quiz-option.incorrect {
+        background: rgba(231, 76, 60, 0.1);
+        border-color: var(--error-red);
+      }
+
+      .quiz-feedback {
+        padding: 15px;
+        border-radius: var(--border-radius);
+        margin-top: 15px;
+        display: none;
+      }
+
+      .quiz-feedback.correct {
+        background: rgba(76, 175, 80, 0.1);
+        color: var(--success-green);
+        display: block;
+      }
+
+      .quiz-feedback.incorrect {
+        background: rgba(231, 76, 60, 0.1);
+        color: var(--error-red);
+        display: block;
+      }
+
+      .quiz-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+
+      .no-resources {
+        text-align: center;
+        padding: 40px 20px;
+        color: #666;
+      }
+
+      .no-resources i {
+        font-size: 3rem;
+        color: #ccc;
+        margin-bottom: 15px;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .resource-tabs {
+          padding-bottom: 0;
+        }
+
+        .resource-tab {
+          padding: 10px 15px;
+          font-size: 0.9rem;
+        }
+
+        .filter-bar {
+          flex-direction: column;
+        }
+
+        .subject-filter,
+        .search-resources {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="premium-badge">BINA Senior</div>
+
+    <!-- User Profile and Logout -->
+    <div class="user-profile">
+      <div class="user-avatar" id="user-avatar">U</div>
+      <span class="user-name" id="user-name">User</span>
+      <button class="logout-btn" id="logout-btn" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+
+    <div class="container">
+      <div class="header">
+        <img src="logo.png" alt="BINA Senior Logo" /><br />
+        <h1>Study Resources</h1>
+        <p>
+          Access comprehensive study materials to help you prepare for your SSCE
+          exams
+        </p>
+        <div class="premium-navigation">
+          <a href="index.html" class="nav-link">
+            <i class="fas fa-home"></i> Home
+          </a>
+          <a href="analytics.html" class="nav-link">
+            <i class="fas fa-chart-line"></i> Analytics
+          </a>
+          <a href="history.html" class="nav-link">
+            <i class="fas fa-history"></i> Exam History
+          </a>
+        </div>
+      </div>
+
+      <div class="resources-container">
+        <!-- Resource Tabs -->
+        <div class="resource-tabs">
+          <div class="resource-tab active" data-tab="study-notes">
+            <i class="fas fa-book"></i> Study Notes
+          </div>
+          <div class="resource-tab" data-tab="video-lessons">
+            <i class="fas fa-video"></i> Video Lessons
+          </div>
+          <div class="resource-tab" data-tab="practice-questions">
+            <i class="fas fa-question-circle"></i> Practice Questions
+          </div>
+          <div class="resource-tab" data-tab="flashcards">
+            <i class="fas fa-clone"></i> Flashcards
+          </div>
+          <div class="resource-tab" data-tab="past-papers">
+            <i class="fas fa-file-alt"></i> Past Papers
+          </div>
+          <div class="resource-tab" data-tab="bookmarked">
+            <i class="fas fa-bookmark"></i> Bookmarked
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <div class="subject-filter">
+            <select id="subject-filter">
+              <option value="all">All Subjects</option>
+              <!-- Subject options will be populated based on user's stream -->
+            </select>
+          </div>
+          <div class="search-resources">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              id="search-resources"
+              placeholder="Search resources..."
+            />
+          </div>
+        </div>
+
+        <!-- Study Notes Content -->
+        <div class="resource-content active" id="study-notes-content">
+          <!-- Content will be populated dynamically -->
+        </div>
+
+        <!-- Video Lessons Content -->
+        <div class="resource-content" id="video-lessons-content">
+          <!-- Content will be populated dynamically -->
+        </div>
+
+        <!-- Practice Questions Content -->
+        <div class="resource-content" id="practice-questions-content">
+          <!-- Content will be populated dynamically -->
+        </div>
+
+        <!-- Flashcards Content -->
+        <div class="resource-content" id="flashcards-content">
+          <!-- Content will be populated dynamically -->
+        </div>
+
+        <!-- Past Papers Content -->
+        <div class="resource-content" id="past-papers-content">
+          <!-- Content will be populated dynamically -->
+        </div>
+
+        <!-- Bookmarked Content -->
+        <div class="resource-content" id="bookmarked-content">
+          <!-- Content will be populated dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+    <script>
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCS1WkhpFPuUy46PEkKLtoqeVQ4lUZyRkU",
+        authDomain: "bina-secondary.firebaseapp.com",
+        projectId: "bina-secondary",
+        storageBucket: "bina-secondary.firebasestorage.app",
+        messagingSenderId: "373949569768",
+        appId: "1:373949569768:web:9c17c253364b87209c075d",
+        measurementId: "G-0G3XEY2GXN",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      // Check if user is logged in
+      document.addEventListener("DOMContentLoaded", function () {
+        const userName = localStorage.getItem("userName");
+        const userRole = localStorage.getItem("userRole");
+        const userFullName = localStorage.getItem("userFullName") || userName;
+        const userStream = localStorage.getItem("userStream");
+
+        if (!userName) {
+          // Redirect to login if no username is found
+          window.location.href = "login.html";
+          return;
+        }
+
+        // Check if user has a stream assigned
+        if (!userStream) {
+          // No stream assigned, redirect to login with error message
+          alert(
+            "Your account doesn't have a stream assigned. Please contact an administrator."
+          );
+          // Clear any user data
+          localStorage.removeItem("userName");
+          localStorage.removeItem("userRole");
+          localStorage.removeItem("userFullName");
+          // Redirect to login
+          window.location.href = "login.html";
+          return;
+        }
+
+        // Set up user profile display
+        const userAvatar = document.getElementById("user-avatar");
+        const userNameDisplay = document.getElementById("user-name");
+
+        // Set avatar initial
+        userAvatar.textContent = userFullName.charAt(0).toUpperCase();
+
+        // Set user name
+        userNameDisplay.textContent = userFullName;
+
+        // Populate subject filter based on user's stream
+        populateSubjectFilter(userStream);
+
+        // Load resources
+        loadResources(userStream);
+
+        // Set up tab switching
+        setupTabs();
+
+        // Set up search functionality
+        setupSearch();
+
+        // Set up logout button
+        document
+          .getElementById("logout-btn")
+          .addEventListener("click", function () {
+            // Clear user data from localStorage
+            localStorage.removeItem("userName");
+            localStorage.removeItem("userRole");
+            localStorage.removeItem("userFullName");
+            localStorage.removeItem("userStream");
+            localStorage.removeItem("examHistory");
+            localStorage.removeItem("examResponses");
+            localStorage.removeItem("examSubjectResult");
+            localStorage.removeItem("examClassResult");
+
+            // Redirect to login page
+            window.location.href = "login.html";
+          });
+      });
+
+      // Populate subject filter based on user's stream
+      function populateSubjectFilter(stream) {
+        const subjectFilter = document.getElementById("subject-filter");
+
+        // Core subjects for all streams
+        const coreSubjects = [
+          { value: "English", label: "English Language" },
+          { value: "Mathematics", label: "Mathematics" },
+          { value: "Civic_Education", label: "Civic Education" },
+        ];
+
+        // Stream-specific subjects
+        let streamSubjects = [];
+
+        switch (stream) {
+          case "science":
+            streamSubjects = [
+              { value: "Physics", label: "Physics" },
+              { value: "Chemistry", label: "Chemistry" },
+              { value: "Biology", label: "Biology" },
+              { value: "Further_Mathematics", label: "Further Mathematics" },
+              { value: "Geography", label: "Geography" },
+              { value: "Agriculture", label: "Agriculture" },
+            ];
+            break;
+          case "arts":
+            streamSubjects = [
+              { value: "Literature", label: "Literature in English" },
+              { value: "Government", label: "Government" },
+              { value: "History", label: "History" },
+              { value: "Music", label: "Music" },
+              { value: "French", label: "French" },
+            ];
+            break;
+          case "commerce":
+            streamSubjects = [
+              { value: "Commerce", label: "Commerce" },
+              { value: "Financial_Accounting", label: "Financial Accounting" },
+              { value: "Government", label: "Government" },
+              { value: "Economics", label: "Economics" },
+              { value: "Geography", label: "Geography" },
+              { value: "Data_Processing", label: "Data Processing" },
+            ];
+            break;
+        }
+
+        // Create optgroup for core subjects
+        const coreGroup = document.createElement("optgroup");
+        coreGroup.label = "Core Subjects";
+
+        // Add core subjects to the group
+        coreSubjects.forEach((subject) => {
+          const option = document.createElement("option");
+          option.value = subject.value;
+          option.textContent = subject.label;
+          coreGroup.appendChild(option);
+        });
+
+        // Create optgroup for stream subjects
+        const streamGroup = document.createElement("optgroup");
+        streamGroup.label = `${
+          stream.charAt(0).toUpperCase() + stream.slice(1)
+        } Subjects`;
+
+        // Add stream subjects to the group
+        streamSubjects.forEach((subject) => {
+          const option = document.createElement("option");
+          option.value = subject.value;
+          option.textContent = subject.label;
+          streamGroup.appendChild(option);
+        });
+
+        // Add both groups to the select
+        subjectFilter.appendChild(coreGroup);
+        subjectFilter.appendChild(streamGroup);
+
+        // Set up change event
+        subjectFilter.addEventListener("change", function () {
+          filterResourcesBySubject(this.value);
+        });
+      }
+
+      // Set up tab switching
+      function setupTabs() {
+        const tabs = document.querySelectorAll(".resource-tab");
+
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", function () {
+            // Remove active class from all tabs
+            tabs.forEach((t) => t.classList.remove("active"));
+
+            // Add active class to clicked tab
+            this.classList.add("active");
+
+            // Hide all content sections
+            document
+              .querySelectorAll(".resource-content")
+              .forEach((content) => {
+                content.classList.remove("active");
+              });
+
+            // Show the corresponding content section
+            const tabId = this.getAttribute("data-tab");
+            document.getElementById(`${tabId}-content`).classList.add("active");
+
+            // Reset subject filter to "All Subjects"
+            document.getElementById("subject-filter").value = "all";
+
+            // Show all resources in the current tab
+            showAllResources();
+          });
+        });
+      }
+
+      // Set up search functionality
+      function setupSearch() {
+        const searchInput = document.getElementById("search-resources");
+
+        searchInput.addEventListener("input", function () {
+          const searchTerm = this.value.toLowerCase().trim();
+
+          if (searchTerm === "") {
+            // If search is cleared, show all resources in the current tab
+            showAllResources();
+            return;
+          }
+
+          // Get all resource cards in the active tab
+          const activeTab = document.querySelector(".resource-content.active");
+          const resourceCards = activeTab.querySelectorAll(".resource-card");
+
+          // Filter resources based on search term
+          resourceCards.forEach((card) => {
+            const title = card
+              .querySelector(".resource-title")
+              .textContent.toLowerCase();
+            const description =
+              card
+                .querySelector(".resource-description")
+                ?.textContent.toLowerCase() || "";
+            const tags = Array.from(card.querySelectorAll(".resource-tag"))
+              .map((tag) => tag.textContent.toLowerCase())
+              .join(" ");
+
+            if (
+              title.includes(searchTerm) ||
+              description.includes(searchTerm) ||
+              tags.includes(searchTerm)
+            ) {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
+            }
+          });
+
+          // Check if no resources are visible
+          checkNoVisibleResources(activeTab);
+        });
+      }
+
+      // Filter resources by subject
+      function filterResourcesBySubject(subject) {
+        // Get all resource cards in the active tab
+        const activeTab = document.querySelector(".resource-content.active");
+        const resourceCards = activeTab.querySelectorAll(".resource-card");
+
+        if (subject === "all") {
+          // Show all resources
+          resourceCards.forEach((card) => {
+            card.style.display = "block";
+          });
+        } else {
+          // Filter resources by subject
+          resourceCards.forEach((card) => {
+            const cardSubject = card.getAttribute("data-subject");
+
+            if (cardSubject === subject) {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        }
+
+        // Check if no resources are visible
+        checkNoVisibleResources(activeTab);
+      }
+
+      // Show all resources in the current tab
+      function showAllResources() {
+        const activeTab = document.querySelector(".resource-content.active");
+        const resourceCards = activeTab.querySelectorAll(".resource-card");
+
+        resourceCards.forEach((card) => {
+          card.style.display = "block";
+        });
+
+        // Check if no resources are visible
+        checkNoVisibleResources(activeTab);
+      }
+
+      // Check if no resources are visible and show a message
+      function checkNoVisibleResources(container) {
+        const visibleResources = Array.from(
+          container.querySelectorAll(".resource-card")
+        ).filter((card) => {
+          return card.style.display !== "none";
+        });
+
+        // Remove existing "no resources" message if it exists
+        const existingMessage = container.querySelector(".no-resources");
+        if (existingMessage) {
+          container.removeChild(existingMessage);
+        }
+
+        if (visibleResources.length === 0) {
+          // No visible resources, show a message
+          const noResourcesMessage = document.createElement("div");
+          noResourcesMessage.className = "no-resources";
+          noResourcesMessage.innerHTML = `
+        <i class="fas fa-search"></i>
+        <p>No resources found matching your criteria.</p>
+        <p>Try adjusting your filters or search terms.</p>
+      `;
+
+          container.appendChild(noResourcesMessage);
+        }
+      }
+
+      // Load resources based on user's stream
+      function loadResources(userStream) {
+        // For demonstration purposes, we'll use mock data
+        // In a real application, you would fetch this from Firestore
+
+        // Study Notes
+        loadStudyNotes(userStream);
+
+        // Video Lessons
+        loadVideoLessons(userStream);
+
+        // Practice Questions
+        loadPracticeQuestions(userStream);
+
+        // Flashcards
+        loadFlashcards(userStream);
+
+        // Past Papers
+        loadPastPapers(userStream);
+
+        // Load bookmarked resources from localStorage
+        loadBookmarkedResources();
+      }
+
+      // Load study notes
+      function loadStudyNotes(userStream) {
+        const container = document.getElementById("study-notes-content");
+
+        // Mock data for study notes
+        const studyNotes = [
+          {
+            id: "note1",
+            title: "Introduction to Algebra",
+            subject: "Mathematics",
+            description:
+              "Comprehensive notes covering the basics of algebra, equations, and variables.",
+            tags: ["Algebra", "Equations", "Variables"],
+            dateAdded: "May 15, 2023",
+            content: `
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>1. What is Algebra?</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>Algebra is a branch of mathematics that uses symbols and letters to represent numbers and quantities in formulas and equations. These symbols are called variables because their values can vary.</p>
+                <p>The main purpose of algebra is to make it easier to state and solve mathematical problems. By using variables, we can write general formulas that work for many different values.</p>
+                <h4>Key Concepts:</h4>
+                <ul>
+                  <li>Variables: Letters that represent unknown values (x, y, z)</li>
+                  <li>Constants: Fixed values that don't change (2, 5, π)</li>
+                  <li>Expressions: Combinations of variables and constants (2x + 3y)</li>
+                  <li>Equations: Mathematical statements that assert the equality of two expressions (x + 5 = 9)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>2. Solving Linear Equations</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>A linear equation is an equation where each term is either a constant or the product of a constant and a single variable raised to the power of 1.</p>
+                <p>The general form of a linear equation in one variable is: ax + b = c</p>
+                <h4>Steps to Solve:</h4>
+                <ol>
+                  <li>Simplify both sides of the equation by combining like terms</li>
+                  <li>Use addition or subtraction to isolate the variable term on one side</li>
+                  <li>Use multiplication or division to solve for the variable</li>
+                </ol>
+                <h4>Example:</h4>
+                <p>Solve for x: 3x + 5 = 20</p>
+                <p>Step 1: The equation is already simplified</p>
+                <p>Step 2: Subtract 5 from both sides: 3x = 15</p>
+                <p>Step 3: Divide both sides by 3: x = 5</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>3. Working with Algebraic Expressions</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>Algebraic expressions are combinations of variables, numbers, and operations. Unlike equations, expressions do not contain an equals sign.</p>
+                <h4>Common Operations:</h4>
+                <ul>
+                  <li><strong>Simplifying</strong>: Combining like terms (terms with the same variables raised to the same powers)</li>
+                  <li><strong>Expanding</strong>: Using the distributive property to remove parentheses</li>
+                  <li><strong>Factoring</strong>: The reverse of expanding, finding common factors</li>
+                </ul>
+                <h4>Example:</h4>
+                <p>Simplify: 3x + 2y + 5x - y</p>
+                <p>Combine like terms: (3x + 5x) + (2y - y)</p>
+                <p>Result: 8x + y</p>
+              </div>
+            </div>
+          </div>
+        `,
+            downloadUrl: "#",
+          },
+          {
+            id: "note2",
+            title: "Cell Structure and Function",
+            subject: "Biology",
+            description:
+              "Detailed notes on cell structure, organelles, and their functions in living organisms.",
+            tags: ["Cells", "Organelles", "Cytology"],
+            dateAdded: "June 2, 2023",
+            content: `
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>1. Introduction to Cells</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>The cell is the basic structural and functional unit of all living organisms. Cells are the smallest unit of life that can replicate independently.</p>
+                <p>There are two main types of cells:</p>
+                <ul>
+                  <li><strong>Prokaryotic cells</strong>: Simpler cells without a nucleus or membrane-bound organelles (e.g., bacteria)</li>
+                  <li><strong>Eukaryotic cells</strong>: More complex cells with a nucleus and membrane-bound organelles (e.g., plant and animal cells)</li>
+                </ul>
+                <p>The cell theory states that:</p>
+                <ol>
+                  <li>All living organisms are composed of one or more cells</li>
+                  <li>The cell is the basic unit of structure and organization in organisms</li>
+                  <li>All cells arise from pre-existing cells</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>2. Cell Membrane</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>The cell membrane (plasma membrane) is a thin, flexible barrier that surrounds all cells. It regulates what enters and leaves the cell.</p>
+                <h4>Structure:</h4>
+                <p>The cell membrane is composed of a phospholipid bilayer with embedded proteins. This structure is described by the fluid mosaic model.</p>
+                <ul>
+                  <li><strong>Phospholipids</strong>: Have a hydrophilic (water-loving) head and hydrophobic (water-fearing) tails</li>
+                  <li><strong>Membrane proteins</strong>: Perform various functions including transport, enzymatic activity, and cell recognition</li>
+                  <li><strong>Cholesterol</strong>: Provides stability and fluidity to the membrane</li>
+                </ul>
+                <h4>Functions:</h4>
+                <ul>
+                  <li>Controls what enters and exits the cell</li>
+                  <li>Maintains cell shape and integrity</li>
+                  <li>Facilitates cell-to-cell communication</li>
+                  <li>Provides anchoring sites for the cytoskeleton</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>3. Cell Organelles and Their Functions</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <h4>Nucleus:</h4>
+                <p>The control center of the cell. It contains the cell's DNA and directs protein synthesis.</p>
+                
+                <h4>Mitochondria:</h4>
+                <p>The "powerhouse" of the cell. Mitochondria generate energy in the form of ATP through cellular respiration.</p>
+                
+                <h4>Endoplasmic Reticulum (ER):</h4>
+                <ul>
+                  <li><strong>Rough ER</strong>: Studded with ribosomes, involved in protein synthesis and transport</li>
+                  <li><strong>Smooth ER</strong>: Involved in lipid synthesis and detoxification</li>
+                </ul>
+                
+                <h4>Golgi Apparatus:</h4>
+                <p>Modifies, sorts, and packages proteins for secretion or use within the cell.</p>
+                
+                <h4>Lysosomes:</h4>
+                <p>Contain digestive enzymes that break down waste materials and cellular debris.</p>
+                
+                <h4>Ribosomes:</h4>
+                <p>Sites of protein synthesis. They can be free in the cytoplasm or attached to the rough ER.</p>
+                
+                <h4>Vacuoles:</h4>
+                <p>Storage compartments for water, nutrients, waste, and other materials.</p>
+                
+                <h4>Chloroplasts (in plant cells only):</h4>
+                <p>Site of photosynthesis, where light energy is converted to chemical energy.</p>
+              </div>
+            </div>
+          </div>
+        `,
+            downloadUrl: "#",
+          },
+          {
+            id: "note3",
+            title: "Atomic Structure and Periodic Table",
+            subject: "Chemistry",
+            description:
+              "Comprehensive notes on atomic structure, electron configuration, and the periodic table of elements.",
+            tags: ["Atoms", "Elements", "Periodic Table"],
+            dateAdded: "April 10, 2023",
+            content: `
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>1. Basic Atomic Structure</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>Atoms are the basic units of matter and the defining structure of elements. They consist of three main particles:</p>
+                <ul>
+                  <li><strong>Protons</strong>: Positively charged particles found in the nucleus. The number of protons determines the element.</li>
+                  <li><strong>Neutrons</strong>: Neutral particles found in the nucleus. They add mass to the atom.</li>
+                  <li><strong>Electrons</strong>: Negatively charged particles that orbit the nucleus in energy levels or shells.</li>
+                </ul>
+                <h4>Key Terms:</h4>
+                <ul>
+                  <li><strong>Atomic Number (Z)</strong>: The number of protons in an atom</li>
+                  <li><strong>Mass Number (A)</strong>: The total number of protons and neutrons</li>
+                  <li><strong>Isotopes</strong>: Atoms of the same element with different numbers of neutrons</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>2. Electron Configuration</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>Electrons are arranged in energy levels or shells around the nucleus. Each shell can hold a specific maximum number of electrons.</p>
+                <ul>
+                  <li>First shell (n=1): Maximum 2 electrons</li>
+                  <li>Second shell (n=2): Maximum 8 electrons</li>
+                  <li>Third shell (n=3): Maximum 18 electrons</li>
+                  <li>Fourth shell (n=4): Maximum 32 electrons</li>
+                </ul>
+                <p>Electrons fill the lowest energy levels first (Aufbau principle).</p>
+                <h4>Electron Configuration Notation:</h4>
+                <p>Electron configurations are written using the notation: 1s² 2s² 2p⁶ 3s² 3p⁶ etc.</p>
+                <p>Where:</p>
+                <ul>
+                  <li>The number represents the energy level (shell)</li>
+                  <li>The letter represents the subshell (s, p, d, f)</li>
+                  <li>The superscript represents the number of electrons in that subshell</li>
+                </ul>
+                <h4>Example:</h4>
+                <p>Sodium (Na, Z=11): 1s² 2s² 2p⁶ 3s¹</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>3. The Periodic Table</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>The periodic table is an arrangement of elements in order of increasing atomic number, grouped according to similar properties.</p>
+                <h4>Organization:</h4>
+                <ul>
+                  <li><strong>Periods</strong>: Horizontal rows (numbered 1-7)</li>
+                  <li><strong>Groups</strong>: Vertical columns (numbered 1-18)</li>
+                </ul>
+                <h4>Main Regions:</h4>
+                <ul>
+                  <li><strong>Metals</strong>: Left and center of the table. Good conductors, malleable, ductile.</li>
+                  <li><strong>Non-metals</strong>: Upper right of the table. Poor conductors, brittle.</li>
+                  <li><strong>Metalloids</strong>: Along the zigzag line between metals and non-metals. Have properties of both.</li>
+                </ul>
+                <h4>Important Groups:</h4>
+                <ul>
+                  <li><strong>Group 1</strong>: Alkali metals (highly reactive)</li>
+                  <li><strong>Group 2</strong>: Alkaline earth metals</li>
+                  <li><strong>Group 17</strong>: Halogens (reactive non-metals)</li>
+                  <li><strong>Group 18</strong>: Noble gases (unreactive)</li>
+                </ul>
+                <p>Elements in the same group have similar chemical properties because they have the same number of valence electrons (electrons in the outermost shell).</p>
+              </div>
+            </div>
+          </div>
+        `,
+            downloadUrl: "#",
+          },
+        ];
+
+        // Add more study notes based on user's stream
+        if (userStream === "science") {
+          studyNotes.push({
+            id: "note4",
+            title: "Newton's Laws of Motion",
+            subject: "Physics",
+            description:
+              "Comprehensive notes on Newton's three laws of motion and their applications.",
+            tags: ["Mechanics", "Forces", "Motion"],
+            dateAdded: "March 5, 2023",
+            content: `
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>1. Newton's First Law (Law of Inertia)</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p><strong>Statement:</strong> An object at rest stays at rest, and an object in motion stays in motion with the same speed and in the same direction, unless acted upon by an unbalanced force.</p>
+                <p>This law is also known as the law of inertia. Inertia is the resistance of an object to any change in its state of motion.</p>
+                <h4>Examples:</h4>
+                <ul>
+                  <li>A book on a table remains at rest until a force is applied to move it.</li>
+                  <li>Passengers in a car tend to continue moving forward when the car suddenly stops.</li>
+                  <li>A soccer ball will continue rolling until friction or another force stops it.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>2. Newton's Second Law (Law of Acceleration)</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p><strong>Statement:</strong> The acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass.</p>
+                <p>Mathematically: F = ma</p>
+                <p>Where:</p>
+                <ul>
+                  <li>F = net force (in Newtons, N)</li>
+                  <li>m = mass (in kilograms, kg)</li>
+                  <li>a = acceleration (in meters per second squared, m/s²)</li>
+                </ul>
+                <h4>Examples:</h4>
+                <ul>
+                  <li>A greater force is needed to accelerate a heavy truck compared to a small car.</li>
+                  <li>The same force will cause a greater acceleration in a lighter object than in a heavier one.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>3. Newton's Third Law (Law of Action-Reaction)</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p><strong>Statement:</strong> For every action, there is an equal and opposite reaction.</p>
+                <p>When one object exerts a force on a second object, the second object exerts an equal and opposite force on the first object.</p>
+                <h4>Examples:</h4>
+                <ul>
+                  <li>A swimmer pushes water backward and the water pushes the swimmer forward.</li>
+                  <li>A rocket expels gas downward and the gas pushes the rocket upward.</li>
+                  <li>When you walk, you push the ground backward, and the ground pushes you forward.</li>
+                </ul>
+                <h4>Important Notes:</h4>
+                <ul>
+                  <li>Action and reaction forces act on different objects.</li>
+                  <li>Action and reaction forces are equal in magnitude but opposite in direction.</li>
+                  <li>Action and reaction forces occur simultaneously.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        `,
+            downloadUrl: "#",
+          });
+        } else if (userStream === "arts") {
+          studyNotes.push({
+            id: "note4",
+            title: "Literary Devices and Techniques",
+            subject: "Literature",
+            description:
+              "Comprehensive guide to literary devices and techniques used in prose, poetry, and drama.",
+            tags: ["Literary Analysis", "Poetry", "Prose"],
+            dateAdded: "February 18, 2023",
+            content: `
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>1. Figurative Language</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>Figurative language uses words or expressions that have a meaning different from the literal interpretation. It's used to create vivid imagery and emphasize ideas.</p>
+                <h4>Common Types:</h4>
+                <ul>
+                  <li><strong>Simile:</strong> A comparison using "like" or "as" (e.g., "Her smile is like sunshine.")</li>
+                  <li><strong>Metaphor:</strong> A direct comparison without using "like" or "as" (e.g., "Time is money.")</li>
+                  <li><strong>Personification:</strong> Giving human qualities to non-human things (e.g., "The wind whispered.")</li>
+                  <li><strong>Hyperbole:</strong> Extreme exaggeration (e.g., "I've told you a million times.")</li>
+                  <li><strong>Oxymoron:</strong> Combining contradictory terms (e.g., "deafening silence")</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>2. Sound Devices</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>Sound devices are techniques that create specific sound effects to enhance the meaning and aesthetic quality of a literary work.</p>
+                <h4>Common Types:</h4>
+                <ul>
+                  <li><strong>Alliteration:</strong> Repetition of initial consonant sounds (e.g., "Peter Piper picked a peck of pickled peppers.")</li>
+                  <li><strong>Assonance:</strong> Repetition of vowel sounds (e.g., "The rain in Spain stays mainly in the plain.")</li>
+                  <li><strong>Consonance:</strong> Repetition of consonant sounds, especially at the end of words (e.g., "first and last")</li>
+                  <li><strong>Onomatopoeia:</strong> Words that imitate the sound they describe (e.g., "buzz," "hiss," "bang")</li>
+                  <li><strong>Rhythm:</strong> The pattern of stressed and unstressed syllables in a line or phrase</li>
+                  <li><strong>Rhyme:</strong> The repetition of similar sounds at the end of words (e.g., "cat" and "hat")</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>3. Narrative Techniques</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>Narrative techniques are methods used by writers to convey their stories, develop characters, and structure their works.</p>
+                <h4>Common Types:</h4>
+                <ul>
+                  <li><strong>Point of View:</strong> The perspective from which a story is told (first person, third person limited, third person omniscient)</li>
+                  <li><strong>Foreshadowing:</strong> Hints or clues about events that will occur later in the story</li>
+                  <li><strong>Flashback:</strong> A scene that takes place before the main narrative</li>
+                  <li><strong>Irony:</strong> A contrast between expectation and reality
+                    <ul>
+                      <li>Verbal irony: Saying one thing but meaning another</li>
+                      <li>Situational irony: When the outcome is opposite of what's expected</li>
+                      <li>Dramatic irony: When the audience knows something the characters don't</li>
+                    </ul>
+                  </li>
+                  <li><strong>Symbolism:</strong> Using objects, characters, or actions to represent abstract ideas</li>
+                  <li><strong>Motif:</strong> A recurring element that has symbolic significance</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        `,
+            downloadUrl: "#",
+          });
+        } else if (userStream === "commerce") {
+          studyNotes.push({
+            id: "note4",
+            title: "Principles of Economics",
+            subject: "Economics",
+            description:
+              "Comprehensive notes on fundamental economic principles, supply and demand, and market structures.",
+            tags: ["Microeconomics", "Supply and Demand", "Markets"],
+            dateAdded: "January 25, 2023",
+            content: `
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>1. Basic Economic Concepts</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>Economics is the study of how societies allocate scarce resources to satisfy unlimited wants and needs.</p>
+                <h4>Key Concepts:</h4>
+                <ul>
+                  <li><strong>Scarcity:</strong> The basic economic problem that resources are limited but wants are unlimited</li>
+                  <li><strong>Opportunity Cost:</strong> The value of the next best alternative foregone when making a choice</li>
+                  <li><strong>Production Possibility Frontier (PPF):</strong> A curve showing the maximum possible combinations of two goods that can be produced with available resources</li>
+                  <li><strong>Economic Systems:</strong> Methods used by societies to allocate resources (traditional, command, market, mixed)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>2. Supply and Demand</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>Supply and demand is a fundamental economic model that explains how prices are determined in a market economy.</p>
+                <h4>Demand:</h4>
+                <p>The quantity of a good or service that consumers are willing and able to buy at various prices.</p>
+                <p><strong>Law of Demand:</strong> As price increases, quantity demanded decreases (and vice versa), ceteris paribus (all else equal).</p>
+                <p><strong>Factors affecting demand:</strong></p>
+                <ul>
+                  <li>Income</li>
+                  <li>Prices of related goods (substitutes and complements)</li>
+                  <li>Tastes and preferences</li>
+                  <li>Expectations</li>
+                  <li>Number of buyers</li>
+                </ul>
+                
+                <h4>Supply:</h4>
+                <p>The quantity of a good or service that producers are willing and able to sell at various prices.</p>
+                <p><strong>Law of Supply:</strong> As price increases, quantity supplied increases (and vice versa), ceteris paribus.</p>
+                <p><strong>Factors affecting supply:</strong></p>
+                <ul>
+                  <li>Cost of production</li>
+                  <li>Technology</li>
+                  <li>Prices of related goods</li>
+                  <li>Expectations</li>
+                  <li>Number of sellers</li>
+                </ul>
+                
+                <h4>Market Equilibrium:</h4>
+                <p>The point where quantity demanded equals quantity supplied, determining the equilibrium price and quantity.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>3. Market Structures</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p>Market structures describe the competitive environment in which firms operate.</p>
+                <h4>Types of Market Structures:</h4>
+                <ul>
+                  <li><strong>Perfect Competition:</strong>
+                    <ul>
+                      <li>Many small firms</li>
+                      <li>Identical products</li>
+                      <li>No barriers to entry or exit</li>
+                      <li>Perfect information</li>
+                      <li>Price takers</li>
+                      <li>Example: Agricultural markets</li>
+                    </ul>
+                  </li>
+                  <li><strong>Monopolistic Competition:</strong>
+                    <ul>
+                      <li>Many firms</li>
+                      <li>Differentiated products</li>
+                      <li>Low barriers to entry and exit</li>
+                      <li>Some price-setting ability</li>
+                      <li>Example: Restaurants, clothing stores</li>
+                    </ul>
+                  </li>
+                  <li><strong>Oligopoly:</strong>
+                    <ul>
+                      <li>Few large firms</li>
+                      <li>Similar or differentiated products</li>
+                      <li>High barriers to entry</li>
+                      <li>Interdependent decision-making</li>
+                      <li>Example: Telecommunications, automobiles</li>
+                    </ul>
+                  </li>
+                  <li><strong>Monopoly:</strong>
+                    <ul>
+                      <li>Single firm</li>
+                      <li>Unique product with no close substitutes</li>
+                      <li>Very high barriers to entry</li>
+                      <li>Price maker</li>
+                      <li>Example: Public utilities</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        `,
+            downloadUrl: "#",
+          });
+        }
+
+        // Render study notes
+        let notesHTML = "";
+
+        studyNotes.forEach((note) => {
+          notesHTML += `
+        <div class="resource-card" data-id="${note.id}" data-subject="${
+            note.subject
+          }">
+          <div class="resource-header">
+            <h3 class="resource-title"><i class="fas fa-book"></i> ${
+              note.title
+            }</h3>
+            <div class="resource-actions">
+              <button class="resource-action-btn bookmark-btn" onclick="toggleBookmark('${
+                note.id
+              }', '${note.title}', 'study-notes')">
+                <i class="far fa-bookmark"></i>
+              </button>
+            </div>
+          </div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span><i class="fas fa-graduation-cap"></i> ${note.subject}</span>
+              <span><i class="far fa-calendar-alt"></i> ${note.dateAdded}</span>
+            </div>
+            <p class="resource-description">${note.description}</p>
+            <div class="resource-tags">
+              ${note.tags
+                .map((tag) => `<span class="resource-tag">${tag}</span>`)
+                .join("")}
+            </div>
+            ${note.content}
+            <div class="resource-actions-footer">
+              <a href="${
+                note.downloadUrl
+              }" class="resource-btn resource-btn-secondary" download>
+                <i class="fas fa-download"></i> Download PDF
+              </a>
+              <button class="resource-btn resource-btn-primary" onclick="printResource('${
+                note.id
+              }')">
+                <i class="fas fa-print"></i> Print
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+        });
+
+        container.innerHTML = notesHTML;
+      }
+
+      // Load video lessons
+      function loadVideoLessons(userStream) {
+        const container = document.getElementById("video-lessons-content");
+
+        // Mock data for video lessons
+        const videoLessons = [
+          {
+            id: "video1",
+            title: "Understanding Quadratic Equations",
+            subject: "Mathematics",
+            description:
+              "A comprehensive video lesson on solving quadratic equations using different methods.",
+            tags: ["Algebra", "Quadratic Equations", "Factoring"],
+            dateAdded: "April 5, 2023",
+            videoUrl: "https://www.youtube.com/embed/ZBalWWHYFQc",
+            duration: "15:42",
+          },
+          {
+            id: "video2",
+            title: "Introduction to Photosynthesis",
+            subject: "Biology",
+            description:
+              "Learn about the process of photosynthesis and how plants convert light energy into chemical energy.",
+            tags: ["Photosynthesis", "Plant Biology", "Cellular Processes"],
+            dateAdded: "March 12, 2023",
+            videoUrl: "https://www.youtube.com/embed/sQK3Yr4Sc_k",
+            duration: "12:18",
+          },
+        ];
+
+        // Add more video lessons based on user's stream
+        if (userStream === "science") {
+          videoLessons.push({
+            id: "video3",
+            title: "Electric Circuits Explained",
+            subject: "Physics",
+            description:
+              "Learn about electric circuits, current, voltage, and resistance with practical examples.",
+            tags: ["Electricity", "Circuits", "Ohm's Law"],
+            dateAdded: "February 28, 2023",
+            videoUrl: "https://www.youtube.com/embed/kcL2_1r-qV4",
+            duration: "18:35",
+          });
+        } else if (userStream === "arts") {
+          videoLessons.push({
+            id: "video3",
+            title: "Analyzing Shakespeare's Macbeth",
+            subject: "Literature",
+            description:
+              "A detailed analysis of themes, characters, and literary devices in Shakespeare's Macbeth.",
+            tags: ["Shakespeare", "Drama", "Literary Analysis"],
+            dateAdded: "March 5, 2023",
+            videoUrl: "https://www.youtube.com/embed/XEYzz3xlafo",
+            duration: "22:14",
+          });
+        } else if (userStream === "commerce") {
+          videoLessons.push({
+            id: "video3",
+            title: "Understanding Financial Statements",
+            subject: "Financial_Accounting",
+            description:
+              "Learn how to read and analyze balance sheets, income statements, and cash flow statements.",
+            tags: ["Accounting", "Financial Statements", "Analysis"],
+            dateAdded: "January 18, 2023",
+            videoUrl: "https://www.youtube.com/embed/f8f-H-apKVY",
+            duration: "19:47",
+          });
+        }
+
+        // Render video lessons
+        let videosHTML = "";
+
+        videoLessons.forEach((video) => {
+          videosHTML += `
+        <div class="resource-card" data-id="${video.id}" data-subject="${
+            video.subject
+          }">
+          <div class="resource-header">
+            <h3 class="resource-title"><i class="fas fa-video"></i> ${
+              video.title
+            }</h3>
+            <div class="resource-actions">
+              <button class="resource-action-btn bookmark-btn" onclick="toggleBookmark('${
+                video.id
+              }', '${video.title}', 'video-lessons')">
+                <i class="far fa-bookmark"></i>
+              </button>
+            </div>
+          </div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span><i class="fas fa-graduation-cap"></i> ${
+                video.subject
+              }</span>
+              <span><i class="far fa-calendar-alt"></i> ${
+                video.dateAdded
+              }</span>
+              <span><i class="far fa-clock"></i> ${video.duration}</span>
+            </div>
+            <p class="resource-description">${video.description}</p>
+            <div class="resource-tags">
+              ${video.tags
+                .map((tag) => `<span class="resource-tag">${tag}</span>`)
+                .join("")}
+            </div>
+            <div class="video-container">
+              <iframe src="${video.videoUrl}" title="${
+            video.title
+          }" allowfullscreen></iframe>
+            </div>
+            <div class="resource-actions-footer">
+              <button class="resource-btn resource-btn-secondary" onclick="shareResource('${
+                video.id
+              }')">
+                <i class="fas fa-share-alt"></i> Share
+              </button>
+              <a href="${
+                video.videoUrl
+              }" class="resource-btn resource-btn-primary" target="_blank">
+                <i class="fas fa-external-link-alt"></i> Watch on YouTube
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+        });
+
+        container.innerHTML = videosHTML;
+      }
+
+      // Load practice questions
+      function loadPracticeQuestions(userStream) {
+        const container = document.getElementById("practice-questions-content");
+
+        // Mock data for practice questions
+        const practiceQuestions = [
+          {
+            id: "quiz1",
+            title: "Mathematics Practice Quiz",
+            subject: "Mathematics",
+            description:
+              "Test your knowledge of algebra, geometry, and trigonometry with these practice questions.",
+            tags: ["Algebra", "Geometry", "Trigonometry"],
+            dateAdded: "May 10, 2023",
+            questions: [
+              {
+                question: "Solve for x: 2x + 5 = 13",
+                options: ["x = 4", "x = 5", "x = 6", "x = 8"],
+                correctAnswer: 0,
+                explanation:
+                  "To solve for x, subtract 5 from both sides: 2x = 8. Then divide both sides by 2: x = 4.",
+              },
+              {
+                question: "What is the area of a circle with radius 5 cm?",
+                options: ["25π cm²", "10π cm²", "5π cm²", "15π cm²"],
+                correctAnswer: 0,
+                explanation:
+                  "The area of a circle is given by the formula A = πr². With r = 5 cm, A = π(5)² = 25π cm².",
+              },
+              {
+                question: "If sin(θ) = 0.5, what is θ?",
+                options: ["30°", "45°", "60°", "90°"],
+                correctAnswer: 0,
+                explanation:
+                  "If sin(θ) = 0.5, then θ = 30° (or 150° in the second quadrant, but 30° is the principal value).",
+              },
+            ],
+          },
+          {
+            id: "quiz2",
+            title: "English Language Practice",
+            subject: "English",
+            description:
+              "Practice your grammar, vocabulary, and comprehension skills with these questions.",
+            tags: ["Grammar", "Vocabulary", "Comprehension"],
+            dateAdded: "April 22, 2023",
+            questions: [
+              {
+                question:
+                  "Which of the following sentences contains a grammatical error?",
+                options: [
+                  "She is one of the students who are going to the field trip.",
+                  "Neither the teacher nor the students were aware of the change.",
+                  "The committee have decided to postpone the meeting.",
+                  "My brother, along with his friends, is coming to the party.",
+                ],
+                correctAnswer: 2,
+                explanation:
+                  'The sentence "The committee have decided to postpone the meeting" contains an error. "Committee" is a collective noun and should take a singular verb: "The committee has decided to postpone the meeting."',
+              },
+              {
+                question:
+                  'Choose the word that is closest in meaning to "ambiguous".',
+                options: ["Clear", "Uncertain", "Definite", "Precise"],
+                correctAnswer: 1,
+                explanation:
+                  '"Ambiguous" means unclear or open to more than one interpretation. "Uncertain" is closest in meaning.',
+              },
+              {
+                question:
+                  'Which literary device is used in the sentence: "The wind whispered through the trees"?',
+                options: ["Simile", "Metaphor", "Personification", "Hyperbole"],
+                correctAnswer: 2,
+                explanation:
+                  "This sentence uses personification, which gives human qualities (whispering) to a non-human thing (the wind).",
+              },
+            ],
+          },
+        ];
+
+        // Add more practice questions based on user's stream
+        if (userStream === "science") {
+          practiceQuestions.push({
+            id: "quiz3",
+            title: "Physics Practice Questions",
+            subject: "Physics",
+            description:
+              "Test your understanding of mechanics, electricity, and waves with these practice questions.",
+            tags: ["Mechanics", "Electricity", "Waves"],
+            dateAdded: "March 15, 2023",
+            questions: [
+              {
+                question:
+                  "A car accelerates from 0 to 20 m/s in 5 seconds. What is its acceleration?",
+                options: ["2 m/s²", "4 m/s²", "5 m/s²", "10 m/s²"],
+                correctAnswer: 1,
+                explanation:
+                  "Acceleration = change in velocity / time = (20 - 0) / 5 = 4 m/s².",
+              },
+              {
+                question:
+                  "Which of the following is the unit of electric current?",
+                options: ["Volt", "Watt", "Ampere", "Ohm"],
+                correctAnswer: 2,
+                explanation: "The unit of electric current is the Ampere (A).",
+              },
+              {
+                question:
+                  "What is the frequency of a wave with a wavelength of 2 meters and a speed of 4 m/s?",
+                options: ["0.5 Hz", "2 Hz", "4 Hz", "8 Hz"],
+                correctAnswer: 1,
+                explanation:
+                  "Frequency = wave speed / wavelength = 4 / 2 = 2 Hz.",
+              },
+            ],
+          });
+        } else if (userStream === "arts") {
+          practiceQuestions.push({
+            id: "quiz3",
+            title: "Literature Analysis Quiz",
+            subject: "Literature",
+            description:
+              "Test your understanding of literary devices, themes, and character analysis.",
+            tags: ["Literary Devices", "Themes", "Character Analysis"],
+            dateAdded: "February 8, 2023",
+            questions: [
+              {
+                question:
+                  'Which of the following is NOT a theme in Shakespeare\'s "Macbeth"?',
+                options: [
+                  "Ambition",
+                  "Fate vs. Free Will",
+                  "Appearance vs. Reality",
+                  "Colonialism",
+                ],
+                correctAnswer: 3,
+                explanation:
+                  'Colonialism is not a major theme in "Macbeth." The main themes include ambition, fate vs. free will, appearance vs. reality, and the supernatural.',
+              },
+              {
+                question:
+                  'What literary device is used in the phrase "all the world\'s a stage"?',
+                options: ["Simile", "Metaphor", "Personification", "Hyperbole"],
+                correctAnswer: 1,
+                explanation:
+                  'This is a metaphor from Shakespeare\'s "As You Like It." It directly compares the world to a stage without using "like" or "as."',
+              },
+              {
+                question:
+                  "Which character type best describes a protagonist who has both heroic and deeply flawed qualities?",
+                options: ["Antihero", "Foil", "Stock character", "Confidant"],
+                correctAnswer: 0,
+                explanation:
+                  "An antihero is a protagonist who lacks conventional heroic qualities and may have both good and bad traits.",
+              },
+            ],
+          });
+        } else if (userStream === "commerce") {
+          practiceQuestions.push({
+            id: "quiz3",
+            title: "Economics Concepts Quiz",
+            subject: "Economics",
+            description:
+              "Test your understanding of basic economic concepts, supply and demand, and market structures.",
+            tags: ["Microeconomics", "Supply and Demand", "Market Structures"],
+            dateAdded: "January 30, 2023",
+            questions: [
+              {
+                question:
+                  "What happens to the equilibrium price when both supply and demand increase?",
+                options: [
+                  "The price definitely increases",
+                  "The price definitely decreases",
+                  "The price remains the same",
+                  "The effect on price is ambiguous",
+                ],
+                correctAnswer: 3,
+                explanation:
+                  "When both supply and demand increase, the effect on price is ambiguous. It depends on which change is greater. If demand increases more than supply, price will rise. If supply increases more than demand, price will fall.",
+              },
+              {
+                question:
+                  "Which of the following is NOT a characteristic of a perfectly competitive market?",
+                options: [
+                  "Many buyers and sellers",
+                  "Homogeneous products",
+                  "Free entry and exit",
+                  "Firms have some control over price",
+                ],
+                correctAnswer: 3,
+                explanation:
+                  "In a perfectly competitive market, firms are price takers, meaning they have no control over the price. They must accept the market price determined by supply and demand.",
+              },
+              {
+                question: "What is the opportunity cost of a decision?",
+                options: [
+                  "The monetary cost of the decision",
+                  "The time spent making the decision",
+                  "The value of the next best alternative foregone",
+                  "The total benefit received from the decision",
+                ],
+                correctAnswer: 2,
+                explanation:
+                  "Opportunity cost is the value of the next best alternative that must be given up when making a choice.",
+              },
+            ],
+          });
+        }
+
+        // Render practice questions
+        let quizzesHTML = "";
+
+        practiceQuestions.forEach((quiz) => {
+          quizzesHTML += `
+        <div class="resource-card" data-id="${quiz.id}" data-subject="${
+            quiz.subject
+          }">
+          <div class="resource-header">
+            <h3 class="resource-title"><i class="fas fa-question-circle"></i> ${
+              quiz.title
+            }</h3>
+            <div class="resource-actions">
+              <button class="resource-action-btn bookmark-btn" onclick="toggleBookmark('${
+                quiz.id
+              }', '${quiz.title}', 'practice-questions')">
+                <i class="far fa-bookmark"></i>
+              </button>
+            </div>
+          </div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span><i class="fas fa-graduation-cap"></i> ${quiz.subject}</span>
+              <span><i class="far fa-calendar-alt"></i> ${quiz.dateAdded}</span>
+              <span><i class="fas fa-list-ol"></i> ${
+                quiz.questions.length
+              } Questions</span>
+            </div>
+            <p class="resource-description">${quiz.description}</p>
+            <div class="resource-tags">
+              ${quiz.tags
+                .map((tag) => `<span class="resource-tag">${tag}</span>`)
+                .join("")}
+            </div>
+            <div class="quiz-container" id="quiz-${quiz.id}">
+              <div class="quiz-start">
+                <button class="resource-btn resource-btn-primary" onclick="startQuiz('${
+                  quiz.id
+                }')">
+                  <i class="fas fa-play"></i> Start Quiz
+                </button>
+              </div>
+              <div class="quiz-questions" style="display: none;">
+                <!-- Questions will be populated when quiz starts -->
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+        });
+
+        container.innerHTML = quizzesHTML;
+
+        // Store quiz data in a global variable for access when starting a quiz
+        window.quizData = practiceQuestions;
+      }
+
+      // Load flashcards
+      function loadFlashcards(userStream) {
+        const container = document.getElementById("flashcards-content");
+
+        // Mock data for flashcards
+        const flashcardSets = [
+          {
+            id: "flashcard1",
+            title: "Mathematics Key Formulas",
+            subject: "Mathematics",
+            description:
+              "Review key formulas for algebra, geometry, and trigonometry.",
+            tags: ["Formulas", "Algebra", "Geometry", "Trigonometry"],
+            dateAdded: "April 18, 2023",
+            cards: [
+              {
+                front: "Quadratic Formula",
+                back: "For ax² + bx + c = 0, x = (-b ± √(b² - 4ac)) / 2a",
+              },
+              {
+                front: "Area of a Circle",
+                back: "A = πr²",
+              },
+              {
+                front: "Pythagorean Theorem",
+                back: "In a right triangle, a² + b² = c², where c is the hypotenuse",
+              },
+              {
+                front: "Sine Law",
+                back: "In any triangle, a/sin(A) = b/sin(B) = c/sin(C)",
+              },
+              {
+                front: "Cosine Law",
+                back: "In any triangle, c² = a² + b² - 2ab·cos(C)",
+              },
+            ],
+          },
+          {
+            id: "flashcard2",
+            title: "English Vocabulary Builder",
+            subject: "English",
+            description:
+              "Expand your vocabulary with these commonly tested words.",
+            tags: ["Vocabulary", "Word Meanings", "Synonyms"],
+            dateAdded: "March 25, 2023",
+            cards: [
+              {
+                front: "Ambiguous",
+                back: "Open to more than one interpretation; not having one obvious meaning.\nSynonyms: unclear, vague, equivocal",
+              },
+              {
+                front: "Benevolent",
+                back: "Well-meaning and kindly.\nSynonyms: kind, generous, charitable",
+              },
+              {
+                front: "Cacophony",
+                back: "A harsh, discordant mixture of sounds.\nSynonyms: discord, dissonance, noise",
+              },
+              {
+                front: "Diligent",
+                back: "Having or showing care and conscientiousness in one's work or duties.\nSynonyms: hardworking, industrious, conscientious",
+              },
+              {
+                front: "Ephemeral",
+                back: "Lasting for a very short time.\nSynonyms: transient, fleeting, momentary",
+              },
+            ],
+          },
+        ];
+
+        // Add more flashcard sets based on user's stream
+        if (userStream === "science") {
+          flashcardSets.push({
+            id: "flashcard3",
+            title: "Physics Concepts and Laws",
+            subject: "Physics",
+            description: "Review key physics concepts, laws, and formulas.",
+            tags: ["Laws", "Formulas", "Concepts"],
+            dateAdded: "February 12, 2023",
+            cards: [
+              {
+                front: "Newton's First Law of Motion",
+                back: "An object at rest stays at rest, and an object in motion stays in motion with the same speed and in the same direction, unless acted upon by an unbalanced force.",
+              },
+              {
+                front: "Newton's Second Law of Motion",
+                back: "The acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass. F = ma",
+              },
+              {
+                front: "Newton's Third Law of Motion",
+                back: "For every action, there is an equal and opposite reaction.",
+              },
+              {
+                front: "Ohm's Law",
+                back: "The current through a conductor between two points is directly proportional to the voltage across the two points. V = IR",
+              },
+              {
+                front: "Law of Conservation of Energy",
+                back: "Energy cannot be created or destroyed, only transformed from one form to another.",
+              },
+            ],
+          });
+        } else if (userStream === "arts") {
+          flashcardSets.push({
+            id: "flashcard3",
+            title: "Literary Devices",
+            subject: "Literature",
+            description:
+              "Review common literary devices and their definitions.",
+            tags: ["Literary Devices", "Techniques", "Analysis"],
+            dateAdded: "January 20, 2023",
+            cards: [
+              {
+                front: "Metaphor",
+                back: 'A figure of speech that directly compares two things without using "like" or "as."\nExample: "All the world\'s a stage."',
+              },
+              {
+                front: "Simile",
+                back: 'A figure of speech that compares two things using "like" or "as."\nExample: "Her smile is like sunshine."',
+              },
+              {
+                front: "Personification",
+                back: 'Giving human qualities to non-human things.\nExample: "The wind whispered through the trees."',
+              },
+              {
+                front: "Irony",
+                back: "A contrast between expectation and reality.\nTypes: verbal irony, situational irony, dramatic irony.",
+              },
+              {
+                front: "Foreshadowing",
+                back: "Hints or clues about events that will occur later in the story.",
+              },
+            ],
+          });
+        } else if (userStream === "commerce") {
+          flashcardSets.push({
+            id: "flashcard3",
+            title: "Economics Terms and Concepts",
+            subject: "Economics",
+            description:
+              "Review key economics terms, concepts, and principles.",
+            tags: ["Terms", "Concepts", "Principles"],
+            dateAdded: "March 8, 2023",
+            cards: [
+              {
+                front: "Opportunity Cost",
+                back: "The value of the next best alternative foregone when making a choice.",
+              },
+              {
+                front: "Elasticity of Demand",
+                back: "A measure of how responsive quantity demanded is to a change in price.\nElastic: %ΔQd > %ΔP\nInelastic: %ΔQd < %ΔP",
+              },
+              {
+                front: "Perfect Competition",
+                back: "A market structure characterized by:\n- Many small firms\n- Identical products\n- No barriers to entry or exit\n- Perfect information\n- Price takers",
+              },
+              {
+                front: "Monopoly",
+                back: "A market structure characterized by:\n- Single firm\n- Unique product with no close substitutes\n- High barriers to entry\n- Price maker",
+              },
+              {
+                front: "Gross Domestic Product (GDP)",
+                back: "The total value of all final goods and services produced within a country in a specific time period.",
+              },
+            ],
+          });
+        }
+
+        // Render flashcard sets
+        let flashcardsHTML = "";
+
+        flashcardSets.forEach((set) => {
+          flashcardsHTML += `
+        <div class="resource-card" data-id="${set.id}" data-subject="${
+            set.subject
+          }">
+          <div class="resource-header">
+            <h3 class="resource-title"><i class="fas fa-clone"></i> ${
+              set.title
+            }</h3>
+            <div class="resource-actions">
+              <button class="resource-action-btn bookmark-btn" onclick="toggleBookmark('${
+                set.id
+              }', '${set.title}', 'flashcards')">
+                <i class="far fa-bookmark"></i>
+              </button>
+            </div>
+          </div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span><i class="fas fa-graduation-cap"></i> ${set.subject}</span>
+              <span><i class="far fa-calendar-alt"></i> ${set.dateAdded}</span>
+              <span><i class="fas fa-layer-group"></i> ${
+                set.cards.length
+              } Cards</span>
+            </div>
+            <p class="resource-description">${set.description}</p>
+            <div class="resource-tags">
+              ${set.tags
+                .map((tag) => `<span class="resource-tag">${tag}</span>`)
+                .join("")}
+            </div>
+            <div class="flashcard-container" id="flashcard-${set.id}">
+              <div class="flashcard-start">
+                <button class="resource-btn resource-btn-primary" onclick="startFlashcards('${
+                  set.id
+                }')">
+                  <i class="fas fa-play"></i> Start Flashcards
+                </button>
+              </div>
+              <div class="flashcard-viewer" style="display: none;">
+                <!-- Flashcards will be populated when started -->
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+        });
+
+        container.innerHTML = flashcardsHTML;
+
+        // Store flashcard data in a global variable for access when starting flashcards
+        window.flashcardData = flashcardSets;
+      }
+
+      // Load past papers
+      function loadPastPapers(userStream) {
+        const container = document.getElementById("past-papers-content");
+
+        // Mock data for past papers
+        const pastPapers = [
+          {
+            id: "paper1",
+            title: "SSCE Mathematics 2022",
+            subject: "Mathematics",
+            description:
+              "Past SSCE Mathematics examination paper from 2022 with solutions.",
+            tags: ["SSCE", "2022", "Solutions"],
+            dateAdded: "January 15, 2023",
+            paperUrl: "#",
+            solutionsUrl: "#",
+          },
+          {
+            id: "paper2",
+            title: "SSCE English Language 2022",
+            subject: "English",
+            description:
+              "Past SSCE English Language examination paper from 2022 with solutions.",
+            tags: ["SSCE", "2022", "Solutions"],
+            dateAdded: "January 15, 2023",
+            paperUrl: "#",
+            solutionsUrl: "#",
+          },
+        ];
+
+        // Add more past papers based on user's stream
+        if (userStream === "science") {
+          pastPapers.push(
+            {
+              id: "paper3",
+              title: "SSCE Physics 2022",
+              subject: "Physics",
+              description:
+                "Past SSCE Physics examination paper from 2022 with solutions.",
+              tags: ["SSCE", "2022", "Solutions"],
+              dateAdded: "January 15, 2023",
+              paperUrl: "#",
+              solutionsUrl: "#",
+            },
+            {
+              id: "paper4",
+              title: "SSCE Chemistry 2022",
+              subject: "Chemistry",
+              description:
+                "Past SSCE Chemistry examination paper from 2022 with solutions.",
+              tags: ["SSCE", "2022", "Solutions"],
+              dateAdded: "January 15, 2023",
+              paperUrl: "#",
+              solutionsUrl: "#",
+            },
+            {
+              id: "paper5",
+              title: "SSCE Biology 2022",
+              subject: "Biology",
+              description:
+                "Past SSCE Biology examination paper from 2022 with solutions.",
+              tags: ["SSCE", "2022", "Solutions"],
+              dateAdded: "January 15, 2023",
+              paperUrl: "#",
+              solutionsUrl: "#",
+            }
+          );
+        } else if (userStream === "arts") {
+          pastPapers.push(
+            {
+              id: "paper3",
+              title: "SSCE Literature 2022",
+              subject: "Literature",
+              description:
+                "Past SSCE Literature examination paper from 2022 with solutions.",
+              tags: ["SSCE", "2022", "Solutions"],
+              dateAdded: "January 15, 2023",
+              paperUrl: "#",
+              solutionsUrl: "#",
+            },
+            {
+              id: "paper4",
+              title: "SSCE Government 2022",
+              subject: "Government",
+              description:
+                "Past SSCE Government examination paper from 2022 with solutions.",
+              tags: ["SSCE", "2022", "Solutions"],
+              dateAdded: "January 15, 2023",
+              paperUrl: "#",
+              solutionsUrl: "#",
+            },
+            {
+              id: "paper5",
+              title: "SSCE History 2022",
+              subject: "History",
+              description:
+                "Past SSCE History examination paper from 2022 with solutions.",
+              tags: ["SSCE", "2022", "Solutions"],
+              dateAdded: "January 15, 2023",
+              paperUrl: "#",
+              solutionsUrl: "#",
+            }
+          );
+        } else if (userStream === "commerce") {
+          pastPapers.push(
+            {
+              id: "paper3",
+              title: "SSCE Economics 2022",
+              subject: "Economics",
+              description:
+                "Past SSCE Economics examination paper from 2022 with solutions.",
+              tags: ["SSCE", "2022", "Solutions"],
+              dateAdded: "January 15, 2023",
+              paperUrl: "#",
+              solutionsUrl: "#",
+            },
+            {
+              id: "paper4",
+              title: "SSCE Commerce 2022",
+              subject: "Commerce",
+              description:
+                "Past SSCE Commerce examination paper from 2022 with solutions.",
+              tags: ["SSCE", "2022", "Solutions"],
+              dateAdded: "January 15, 2023",
+              paperUrl: "#",
+              solutionsUrl: "#",
+            },
+            {
+              id: "paper5",
+              title: "SSCE Financial Accounting 2022",
+              subject: "Financial_Accounting",
+              description:
+                "Past SSCE Financial Accounting examination paper from 2022 with solutions.",
+              tags: ["SSCE", "2022", "Solutions"],
+              dateAdded: "January 15, 2023",
+              paperUrl: "#",
+              solutionsUrl: "#",
+            }
+          );
+        }
+
+        // Render past papers
+        let papersHTML = "";
+
+        pastPapers.forEach((paper) => {
+          papersHTML += `
+        <div class="resource-card" data-id="${paper.id}" data-subject="${
+            paper.subject
+          }">
+          <div class="resource-header">
+            <h3 class="resource-title"><i class="fas fa-file-alt"></i> ${
+              paper.title
+            }</h3>
+            <div class="resource-actions">
+              <button class="resource-action-btn bookmark-btn" onclick="toggleBookmark('${
+                paper.id
+              }', '${paper.title}', 'past-papers')">
+                <i class="far fa-bookmark"></i>
+              </button>
+            </div>
+          </div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span><i class="fas fa-graduation-cap"></i> ${
+                paper.subject
+              }</span>
+              <span><i class="far fa-calendar-alt"></i> ${
+                paper.dateAdded
+              }</span>
+            </div>
+            <p class="resource-description">${paper.description}</p>
+            <div class="resource-tags">
+              ${paper.tags
+                .map((tag) => `<span class="resource-tag">${tag}</span>`)
+                .join("")}
+            </div>
+            <div class="resource-actions-footer">
+              <a href="${
+                paper.paperUrl
+              }" class="resource-btn resource-btn-secondary" download>
+                <i class="fas fa-download"></i> Download Paper
+              </a>
+              <a href="${
+                paper.solutionsUrl
+              }" class="resource-btn resource-btn-primary" download>
+                <i class="fas fa-download"></i> Download Solutions
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+        });
+
+        container.innerHTML = papersHTML;
+      }
+
+      // Load bookmarked resources
+      function loadBookmarkedResources() {
+        const container = document.getElementById("bookmarked-content");
+
+        // Get bookmarked resources from localStorage
+        const bookmarks = JSON.parse(
+          localStorage.getItem("bookmarkedResources") || "[]"
+        );
+
+        if (bookmarks.length === 0) {
+          container.innerHTML = `
+        <div class="no-resources">
+          <i class="fas fa-bookmark"></i>
+          <p>You haven't bookmarked any resources yet.</p>
+          <p>Click the bookmark icon on any resource to save it here for easy access.</p>
+        </div>
+      `;
+          return;
+        }
+
+        // Render bookmarked resources
+        let bookmarksHTML = "";
+
+        bookmarks.forEach((bookmark) => {
+          bookmarksHTML += `
+        <div class="resource-card" data-id="${bookmark.id}">
+          <div class="resource-header">
+            <h3 class="resource-title">
+              <i class="fas ${getIconForResourceType(bookmark.type)}"></i> ${
+            bookmark.title
+          }
+            </h3>
+            <div class="resource-actions">
+              <button class="resource-action-btn bookmark-btn bookmarked" onclick="removeBookmark('${
+                bookmark.id
+              }')">
+                <i class="fas fa-bookmark"></i>
+              </button>
+            </div>
+          </div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span><i class="fas fa-tag"></i> ${bookmark.type}</span>
+              <span><i class="far fa-clock"></i> Bookmarked on ${
+                bookmark.dateBookmarked
+              }</span>
+            </div>
+            <div class="resource-actions-footer">
+              <button class="resource-btn resource-btn-primary" onclick="goToResource('${
+                bookmark.type
+              }', '${bookmark.id}')">
+                <i class="fas fa-external-link-alt"></i> Go to Resource
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+        });
+
+        container.innerHTML = bookmarksHTML;
+      }
+
+      // Helper function to get icon for resource type
+      function getIconForResourceType(type) {
+        switch (type) {
+          case "study-notes":
+            return "fa-book";
+          case "video-lessons":
+            return "fa-video";
+          case "practice-questions":
+            return "fa-question-circle";
+          case "flashcards":
+            return "fa-clone";
+          case "past-papers":
+            return "fa-file-alt";
+          default:
+            return "fa-file";
+        }
+      }
+    </script>
+
+    <!-- Additional JavaScript for interactive features -->
+    <script>
+      // Toggle accordion sections
+      function toggleAccordion(header) {
+        const content = header.nextElementSibling;
+        content.classList.toggle("active");
+
+        // Toggle icon
+        const icon = header.querySelector("i");
+        if (content.classList.contains("active")) {
+          icon.className = "fas fa-chevron-up";
+        } else {
+          icon.className = "fas fa-chevron-down";
+        }
+      }
+
+      // Toggle bookmark
+      function toggleBookmark(id, title, type) {
+        // Get existing bookmarks
+        const bookmarks = JSON.parse(
+          localStorage.getItem("bookmarkedResources") || "[]"
+        );
+
+        // Check if already bookmarked
+        const existingIndex = bookmarks.findIndex(
+          (bookmark) => bookmark.id === id
+        );
+
+        if (existingIndex !== -1) {
+          // Already bookmarked, remove it
+          bookmarks.splice(existingIndex, 1);
+          localStorage.setItem(
+            "bookmarkedResources",
+            JSON.stringify(bookmarks)
+          );
+
+          // Update UI
+          const bookmarkBtn = document.querySelector(
+            `.resource-card[data-id="${id}"] .bookmark-btn`
+          );
+          bookmarkBtn.classList.remove("bookmarked");
+          bookmarkBtn.querySelector("i").className = "far fa-bookmark";
+
+          // Show toast
+          showToast("Resource removed from bookmarks", "info");
+        } else {
+          // Not bookmarked, add it
+          bookmarks.push({
+            id,
+            title,
+            type,
+            dateBookmarked: new Date().toLocaleDateString(),
+          });
+          localStorage.setItem(
+            "bookmarkedResources",
+            JSON.stringify(bookmarks)
+          );
+
+          // Update UI
+          const bookmarkBtn = document.querySelector(
+            `.resource-card[data-id="${id}"] .bookmark-btn`
+          );
+          bookmarkBtn.classList.add("bookmarked");
+          bookmarkBtn.querySelector("i").className = "fas fa-bookmark";
+
+          // Show toast
+          showToast("Resource added to bookmarks", "success");
+        }
+
+        // Refresh bookmarks tab if it's active
+        if (
+          document
+            .querySelector('.resource-tab[data-tab="bookmarked"]')
+            .classList.contains("active")
+        ) {
+          loadBookmarkedResources();
+        }
+      }
+
+      // Remove bookmark (from bookmarks tab)
+      function removeBookmark(id) {
+        // Get existing bookmarks
+        const bookmarks = JSON.parse(
+          localStorage.getItem("bookmarkedResources") || "[]"
+        );
+
+        // Remove bookmark
+        const updatedBookmarks = bookmarks.filter(
+          (bookmark) => bookmark.id !== id
+        );
+        localStorage.setItem(
+          "bookmarkedResources",
+          JSON.stringify(updatedBookmarks)
+        );
+
+        // Refresh bookmarks tab
+        loadBookmarkedResources();
+
+        // Show toast
+        showToast("Resource removed from bookmarks", "info");
+      }
+
+      // Go to resource from bookmarks
+      function goToResource(type, id) {
+        // Switch to the appropriate tab
+        const tab = document.querySelector(`.resource-tab[data-tab="${type}"]`);
+        tab.click();
+
+        // Scroll to the resource
+        setTimeout(() => {
+          const resource = document.querySelector(
+            `#${type}-content .resource-card[data-id="${id}"]`
+          );
+          if (resource) {
+            resource.scrollIntoView({ behavior: "smooth", block: "center" });
+            resource.style.boxShadow = "0 0 0 3px var(--primary-color)";
+            setTimeout(() => {
+              resource.style.boxShadow = "";
+            }, 3000);
+          }
+        }, 300);
+      }
+
+      // Start quiz
+      function startQuiz(quizId) {
+        // Find the quiz data
+        const quiz = window.quizData.find((q) => q.id === quizId);
+        if (!quiz) return;
+
+        // Get the quiz container
+        const quizContainer = document.querySelector(`#quiz-${quizId}`);
+        const startSection = quizContainer.querySelector(".quiz-start");
+        const questionsSection = quizContainer.querySelector(".quiz-questions");
+
+        // Hide start section and show questions section
+        startSection.style.display = "none";
+        questionsSection.style.display = "block";
+
+        // Populate questions
+        let questionsHTML = "";
+
+        quiz.questions.forEach((question, index) => {
+          questionsHTML += `
+        <div class="quiz-question" data-index="${index}">
+          <h4>${index + 1}. ${question.question}</h4>
+          <div class="quiz-options">
+            ${question.options
+              .map(
+                (option, optIndex) => `
+              <div class="quiz-option" data-index="${optIndex}" onclick="selectOption(this, ${index}, ${optIndex}, ${question.correctAnswer})">
+                ${option}
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      `;
+        });
+
+        questionsHTML += `
+      <div class="quiz-navigation">
+        <button class="resource-btn resource-btn-secondary" onclick="resetQuiz('${quizId}')">
+          <i class="fas fa-redo"></i> Reset Quiz
+        </button>
+      </div>
+    `;
+
+        questionsSection.innerHTML = questionsHTML;
+      }
+
+      // Select quiz option
+      function selectOption(
+        optionElement,
+        questionIndex,
+        optionIndex,
+        correctAnswerIndex
+      ) {
+        // Get all options for this question
+        const questionElement = optionElement.closest(".quiz-question");
+        const options = questionElement.querySelectorAll(".quiz-option");
+
+        // Check if an option is already selected
+        const alreadyAnswered = Array.from(options).some((opt) =>
+          opt.classList.contains("selected")
+        );
+        if (alreadyAnswered) return;
+
+        // Mark selected option
+        optionElement.classList.add("selected");
+
+        // Check if correct
+        const isCorrect = optionIndex === correctAnswerIndex;
+
+        // Show feedback
+        const feedbackElement = questionElement.querySelector(".quiz-feedback");
+
+        if (isCorrect) {
+          optionElement.classList.add("correct");
+          feedbackElement.classList.add("correct");
+          feedbackElement.innerHTML =
+            '<i class="fas fa-check-circle"></i> Correct! Well done.';
+        } else {
+          optionElement.classList.add("incorrect");
+          options[correctAnswerIndex].classList.add("correct");
+          feedbackElement.classList.add("incorrect");
+          feedbackElement.innerHTML =
+            '<i class="fas fa-times-circle"></i> Incorrect. The correct answer is shown.';
+        }
+
+        // Get the quiz data for this question
+        const quizId = questionElement
+          .closest(".quiz-container")
+          .id.replace("quiz-", "");
+        const quiz = window.quizData.find((q) => q.id === quizId);
+        const question = quiz.questions[questionIndex];
+
+        // Add explanation if available
+        if (question.explanation) {
+          feedbackElement.innerHTML += `<p>${question.explanation}</p>`;
+        }
+      }
+
+      // Reset quiz
+      function resetQuiz(quizId) {
+        // Get the quiz container
+        const quizContainer = document.querySelector(`#quiz-${quizId}`);
+        const startSection = quizContainer.querySelector(".quiz-start");
+        const questionsSection = quizContainer.querySelector(".quiz-questions");
+
+        // Hide questions section and show start section
+        questionsSection.style.display = "none";
+        startSection.style.display = "block";
+      }
+
+      // Start flashcards
+      function startFlashcards(setId) {
+        // Find the flashcard set data
+        const set = window.flashcardData.find((s) => s.id === setId);
+        if (!set) return;
+
+        // Get the flashcard container
+        const flashcardContainer = document.querySelector(
+          `#flashcard-${setId}`
+        );
+        const startSection =
+          flashcardContainer.querySelector(".flashcard-start");
+        const viewerSection =
+          flashcardContainer.querySelector(".flashcard-viewer");
+
+        // Hide start section and show viewer section
+        startSection.style.display = "none";
+        viewerSection.style.display = "block";
+
+        // Set up flashcard viewer
+        viewerSection.innerHTML = `
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-front">
+          ${set.cards[0].front}
+        </div>
+        <div class="flashcard-back">
+          ${set.cards[0].back}
+        </div>
+      </div>
+      <div class="flashcard-navigation">
+        <button class="flashcard-nav-btn" onclick="prevCard('${setId}')" disabled>
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="flashcard-counter">
+          <span id="flashcard-current-${setId}">1</span> / <span id="flashcard-total-${setId}">${set.cards.length}</span>
+        </div>
+        <button class="flashcard-nav-btn" onclick="nextCard('${setId}')">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      <div style="margin-top: 15px; text-align: center;">
+        <button class="resource-btn resource-btn-secondary" onclick="resetFlashcards('${setId}')">
+          <i class="fas fa-redo"></i> Reset
+        </button>
+      </div>
+    `;
+
+        // Store current card index
+        viewerSection.dataset.currentCard = 0;
+      }
+
+      // Flip flashcard
+      function flipCard(cardElement) {
+        cardElement.classList.toggle("flipped");
+      }
+
+      // Navigate to previous flashcard
+      function prevCard(setId) {
+        // Find the flashcard set data
+        const set = window.flashcardData.find((s) => s.id === setId);
+        if (!set) return;
+
+        // Get the flashcard container
+        const viewerSection = document.querySelector(
+          `#flashcard-${setId} .flashcard-viewer`
+        );
+        const currentIndex = parseInt(viewerSection.dataset.currentCard);
+
+        // Calculate new index
+        const newIndex = Math.max(0, currentIndex - 1);
+        viewerSection.dataset.currentCard = newIndex;
+
+        // Update flashcard
+        updateFlashcard(setId, newIndex);
+      }
+
+      // Navigate to next flashcard
+      function nextCard(setId) {
+        // Find the flashcard set data
+        const set = window.flashcardData.find((s) => s.id === setId);
+        if (!set) return;
+
+        // Get the flashcard container
+        const viewerSection = document.querySelector(
+          `#flashcard-${setId} .flashcard-viewer`
+        );
+        const currentIndex = parseInt(viewerSection.dataset.currentCard);
+
+        // Calculate new index
+        const newIndex = Math.min(set.cards.length - 1, currentIndex + 1);
+        viewerSection.dataset.currentCard = newIndex;
+
+        // Update flashcard
+        updateFlashcard(setId, newIndex);
+      }
+
+      // Update flashcard content
+      function updateFlashcard(setId, index) {
+        // Find the flashcard set data
+        const set = window.flashcardData.find((s) => s.id === setId);
+        if (!set) return;
+
+        // Get the flashcard elements
+        const viewerSection = document.querySelector(
+          `#flashcard-${setId} .flashcard-viewer`
+        );
+        const flashcard = viewerSection.querySelector(".flashcard");
+        const frontSide = flashcard.querySelector(".flashcard-front");
+        const backSide = flashcard.querySelector(".flashcard-back");
+        const prevButton = viewerSection.querySelector(
+          ".flashcard-nav-btn:first-child"
+        );
+        const nextButton = viewerSection.querySelector(
+          ".flashcard-nav-btn:last-child"
+        );
+        const currentCounter = document.getElementById(
+          `flashcard-current-${setId}`
+        );
+
+        // Update content
+        frontSide.textContent = set.cards[index].front;
+        backSide.textContent = set.cards[index].back;
+
+        // Reset flip state
+        flashcard.classList.remove("flipped");
+
+        // Update navigation buttons
+        prevButton.disabled = index === 0;
+        nextButton.disabled = index === set.cards.length - 1;
+
+        // Update counter
+        currentCounter.textContent = index + 1;
+      }
+
+      // Reset flashcards
+      function resetFlashcards(setId) {
+        // Get the flashcard container
+        const flashcardContainer = document.querySelector(
+          `#flashcard-${setId}`
+        );
+        const startSection =
+          flashcardContainer.querySelector(".flashcard-start");
+        const viewerSection =
+          flashcardContainer.querySelector(".flashcard-viewer");
+
+        // Hide viewer section and show start section
+        viewerSection.style.display = "none";
+        startSection.style.display = "block";
+      }
+
+      // Print resource
+      function printResource(resourceId) {
+        // Create a new window for printing
+        const printWindow = window.open("", "_blank");
+
+        // Find the resource
+        const resourceCard = document.querySelector(
+          `.resource-card[data-id="${resourceId}"]`
+        );
+        const title = resourceCard.querySelector(".resource-title").textContent;
+        const subject = resourceCard.querySelector(
+          ".resource-meta span:first-child"
+        ).textContent;
+        const content = resourceCard.querySelector(".resource-body").innerHTML;
+
+        // Create print content
+        const printContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>${title}</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            padding: 20px;
+          }
+          h1 {
+            color: #1e88e5;
+            border-bottom: 2px solid #1e88e5;
+            padding-bottom: 10px;
+          }
+          h2 {
+            color: #1565c0;
+            margin-top: 20px;
+          }
+          .resource-meta {
+            color: #666;
+            margin-bottom: 20px;
+          }
+          .resource-description {
+            font-style: italic;
+            margin-bottom: 20px;
+          }
+          .resource-tags, .resource-actions-footer, .resource-actions {
+            display: none;
+          }
+          .accordion-header {
+            background: #f5f5f5;
+            padding: 10px;
+            margin-top: 15px;
+            font-weight: bold;
+          }
+          .accordion-content {
+            padding: 10px;
+            border: 1px solid #eee;
+          }
+          @media print {
+            body {
+              font-size: 12pt;
+            }
+            h1 {
+              font-size: 18pt;
+            }
+            h2 {
+              font-size: 16pt;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <h1>${title}</h1>
+        <div class="resource-meta">${subject}</div>
+        ${content}
+        <div style="margin-top: 30px; text-align: center; color: #666;">
+          <p>Printed from BINA Senior Study Resources</p>
+        </div>
+      </body>
+      </html>
+    `;
+
+        // Write to the new window and print
+        printWindow.document.open();
+        printWindow.document.write(printContent);
+        printWindow.document.close();
+
+        // Wait for content to load then print
+        printWindow.onload = function () {
+          printWindow.print();
+        };
+      }
+
+      // Share resource
+      function shareResource(resourceId) {
+        // Find the resource
+        const resourceCard = document.querySelector(
+          `.resource-card[data-id="${resourceId}"]`
+        );
+        const title = resourceCard.querySelector(".resource-title").textContent;
+
+        // Create share text
+        const shareText = `Check out this resource: ${title} on BINA Senior Study Resources`;
+
+        // Check if Web Share API is available
+        if (navigator.share) {
+          navigator
+            .share({
+              title: title,
+              text: shareText,
+              url: window.location.href,
+            })
+            .then(() => showToast("Resource shared successfully", "success"))
+            .catch((error) => console.error("Error sharing:", error));
+        } else {
+          // Fallback: copy to clipboard
+          navigator.clipboard
+            .writeText(shareText + " - " + window.location.href)
+            .then(() => showToast("Link copied to clipboard", "success"))
+            .catch((error) =>
+              console.error("Error copying to clipboard:", error)
+            );
+        }
+      }
+
+      // Show toast notification
+      function showToast(message, type = "info") {
+        // Remove existing toast if any
+        const existingToast = document.querySelector(".toast");
+        if (existingToast) {
+          document.body.removeChild(existingToast);
+        }
+
+        // Create toast element
+        const toast = document.createElement("div");
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+
+        // Add to body
+        document.body.appendChild(toast);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+          if (document.body.contains(toast)) {
+            document.body.removeChild(toast);
+          }
+        }, 3000);
+      }
+
+      // Check for bookmarked resources on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get all bookmark buttons
+        const bookmarkButtons = document.querySelectorAll(".bookmark-btn");
+
+        // Get bookmarked resources from localStorage
+        const bookmarks = JSON.parse(
+          localStorage.getItem("bookmarkedResources") || "[]"
+        );
+
+        // Update UI for bookmarked resources
+        bookmarkButtons.forEach((button) => {
+          const resourceId = button.closest(".resource-card").dataset.id;
+          const isBookmarked = bookmarks.some(
+            (bookmark) => bookmark.id === resourceId
+          );
+
+          if (isBookmarked) {
+            button.classList.add("bookmarked");
+            button.querySelector("i").className = "fas fa-bookmark";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

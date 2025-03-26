@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BINA Senior - Login</title>
+    <link rel="stylesheet" href="auth-styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Background decorative elements -->
+    <div class="bg-circle bg-circle-1"></div>
+    <div class="bg-circle bg-circle-2"></div>
+
+    <div class="container">
+      <!-- BINA Senior Logo -->
+      <img src="logo.png" alt="BINA Senior" class="logo" />
+      <h2>Welcome Back</h2>
+      <form id="loginForm">
+        <div class="input-group">
+          <input type="email" id="loginEmail" placeholder=" " required />
+          <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
+        </div>
+        <div class="input-group">
+          <input type="password" id="loginPassword" placeholder=" " required />
+          <label for="loginPassword"
+            ><i class="fas fa-lock"></i> Password</label
+          >
+        </div>
+        <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
+      </form>
+      <p class="alt-link">
+        Don't have an account? <a href="signup.html">Sign Up</a>
+      </p>
+      <p class="alt-link">
+        <a href="admin-login.html">Admin Login</a>
+      </p>
+      <p class="message" id="loginMessage"></p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+    <script>
+      // Your Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCS1WkhpFPuUy46PEkKLtoqeVQ4lUZyRkU",
+        authDomain: "bina-secondary.firebaseapp.com",
+        projectId: "bina-secondary",
+        storageBucket: "bina-secondary.firebasestorage.app",
+        messagingSenderId: "373949569768",
+        appId: "1:373949569768:web:9c17c253364b87209c075d",
+        measurementId: "G-0G3XEY2GXN",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Get references to Firebase services
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      // Remove any existing login state when the login page loads
+      function clearLoginState() {
+        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userFullName");
+        localStorage.removeItem("userStream");
+        // Sign out any existing user session
+        auth.signOut().catch((error) => {
+          console.log("Sign out error:", error);
+        });
+      }
+
+      // Run on page load to ensure fresh login is required
+      clearLoginState();
+
+      // Login form submission
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("loginEmail").value;
+          const password = document.getElementById("loginPassword").value;
+          const messageElement = document.getElementById("loginMessage");
+
+          // Show loading state
+          document.querySelector("button").innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+          document.querySelector("button").disabled = true;
+
+          // Sign in with email and password
+          auth
+            .signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+              // User signed in successfully
+              const user = userCredential.user;
+
+              // Get user data from Firestore
+              return db
+                .collection("users")
+                .doc(user.uid)
+                .get()
+                .then((doc) => {
+                  if (doc.exists) {
+                    // Check if user has a stream assigned
+                    if (
+                      doc.data().role === "student" &&
+                      (!doc.data().stream || doc.data().stream === "")
+                    ) {
+                      // No stream assigned, show error message
+                      messageElement.textContent =
+                        "Your account doesn't have a stream assigned. Please contact an administrator.";
+                      messageElement.style.color = "red";
+
+                      // Reset button
+                      document.querySelector("button").innerHTML =
+                        '<i class="fas fa-sign-in-alt"></i> Login';
+                      document.querySelector("button").disabled = false;
+
+                      // Sign out the user
+                      return auth.signOut().then(() => {
+                        throw new Error("No stream assigned");
+                      });
+                    }
+
+                    // Store user data in localStorage
+                    localStorage.setItem(
+                      "userName",
+                      doc.data().username || email.split("@")[0]
+                    );
+                    localStorage.setItem(
+                      "userFullName",
+                      doc.data().fullName ||
+                        doc.data().username ||
+                        email.split("@")[0]
+                    );
+                    localStorage.setItem(
+                      "userRole",
+                      doc.data().role || "student"
+                    );
+
+                    // Store stream preference if available
+                    if (doc.data().stream) {
+                      localStorage.setItem("userStream", doc.data().stream);
+                    }
+
+                    // Check if user is an admin
+                    if (doc.data().role === "admin") {
+                      messageElement.textContent =
+                        "Admin login detected. Redirecting to admin panel...";
+                      setTimeout(() => {
+                        window.location.href = "admin/dashboard.html";
+                      }, 2000);
+                      return;
+                    }
+                  }
+                  return userCredential;
+                });
+            })
+            .then(() => {
+              // Only execute this for non-admin users
+              if (localStorage.getItem("userRole") !== "admin") {
+                messageElement.textContent = "Login successful! Redirecting...";
+                messageElement.style.color = "green";
+
+                // Redirect to home page after successful login
+                setTimeout(() => {
+                  window.location.href = "index.html";
+                }, 2000);
+              }
+            })
+            .catch((error) => {
+              console.error("Login error:", error);
+
+              // Custom error message for no stream assigned
+              if (error.message === "No stream assigned") {
+                // Already handled above
+                return;
+              }
+
+              messageElement.textContent = error.message;
+              messageElement.style.color = "red";
+              // Reset button
+              document.querySelector("button").innerHTML =
+                '<i class="fas fa-sign-in-alt"></i> Login';
+              document.querySelector("button").disabled = false;
+            });
+        });
+    </script>
+  </body>
+</html>

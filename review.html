@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BINA Secondary - Exam Review</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* Enhanced styles for the review page */
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .review-header h2 {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .review-header h3 {
+        color: var(--secondary-color);
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .filter-options {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .filter-btn {
+        background: #f5f5f5;
+        border: 1px solid #e0e0e0;
+        padding: 8px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+      }
+
+      .filter-btn:hover {
+        background: #e9e9e9;
+      }
+
+      .filter-btn.active {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+
+      .question-review {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border-left: 5px solid #e0e0e0;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .question-review:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      }
+
+      .question-review.correct {
+        border-left-color: var(--success-green);
+      }
+
+      .question-review.incorrect {
+        border-left-color: var(--error-red);
+      }
+
+      .question-text {
+        font-size: 1.1rem;
+        margin-bottom: 1.2rem;
+        line-height: 1.5;
+      }
+
+      .option-item {
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        border-radius: var(--border-radius);
+        background: #f9f9f9;
+        border: 1px solid #eee;
+        transition: background 0.2s ease;
+      }
+
+      .option-item:hover {
+        background: #f5f5f5;
+      }
+
+      .selected-option {
+        background: rgba(39, 174, 96, 0.1);
+        border-color: rgba(39, 174, 96, 0.3);
+      }
+
+      .correct-option {
+        background: rgba(39, 174, 96, 0.1);
+        border-color: var(--success-green);
+      }
+
+      .selected-marker {
+        font-weight: 500;
+        color: var(--primary-color);
+        margin-left: 5px;
+      }
+
+      .correct-marker {
+        font-weight: 500;
+        color: var(--success-green);
+        margin-left: 5px;
+      }
+
+      .answer-status {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+      }
+
+      .correct-answer {
+        color: var(--success-green);
+        font-weight: 500;
+      }
+
+      .incorrect-answer {
+        color: var(--error-red);
+        font-weight: 500;
+      }
+
+      .explanation {
+        background: rgba(39, 174, 96, 0.05);
+        border-left: 3px solid var(--primary-color);
+        padding: 15px;
+        margin-top: 15px;
+        border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      }
+
+      .explanation-title {
+        color: var(--primary-color);
+        margin-bottom: 8px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .explanation-title i {
+        font-size: 1.1rem;
+      }
+
+      .explanation p {
+        line-height: 1.6;
+      }
+
+      .review-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .review-actions button {
+        flex: 1;
+      }
+
+      @media (max-width: 768px) {
+        .review-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .filter-options {
+          width: 100%;
+          overflow-x: auto;
+          padding-bottom: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-circle bg-circle-1"></div>
+    <div class="bg-circle bg-circle-2"></div>
+
+    <div class="premium-badge">BINA Secondary</div>
+
+    <div class="container">
+      <div class="header">
+        <img src="logo.png" alt="BINA Secondary Logo" />
+        <h1>Exam Review</h1>
+      </div>
+
+      <div id="review-container">
+        <!-- Content will be loaded by JavaScript -->
+      </div>
+    </div>
+
+    <script>
+      // This is the JavaScript for the review page
+      document.addEventListener("DOMContentLoaded", () => {
+        // Get stored responses from localStorage
+        const responses = JSON.parse(
+          localStorage.getItem("examResponses") || "[]"
+        );
+        const subject =
+          localStorage.getItem("examSubjectResult") || "Unknown Subject";
+        const classLevel = localStorage.getItem("examClassResult") || "JSS3";
+        const userName = localStorage.getItem("userName") || "Guest";
+
+        // Display review header
+        document.getElementById("review-container").innerHTML = `
+        <div class="review-header">
+          <div>
+            <h2>Exam Review</h2>
+            <h3>Student: ${userName}</h3>
+            <h3>Subject: ${subject}</h3>
+            <h3>Class: ${classLevel}</h3>
+          </div>
+          <div class="filter-options">
+            <button class="filter-btn active" data-filter="all">All Questions</button>
+            <button class="filter-btn" data-filter="correct">Correct Only</button>
+            <button class="filter-btn" data-filter="incorrect">Incorrect Only</button>
+          </div>
+        </div>
+        <div id="questions-review"></div>
+        <div class="review-actions">
+          <button onclick="window.location.href='index.html'" class="submit-btn">
+            <i class="fas fa-home"></i> Back to Home
+          </button>
+        </div>
+      `;
+
+        // Display questions
+        displayReviewQuestions(responses);
+
+        // Set up filter buttons
+        setupFilterButtons();
+      });
+
+      function displayReviewQuestions(responses) {
+        const questionsReviewDiv = document.getElementById("questions-review");
+        questionsReviewDiv.innerHTML = "";
+
+        if (!responses || responses.length === 0) {
+          questionsReviewDiv.innerHTML = `
+          <div class="no-data">
+            <i class="fas fa-info-circle"></i>
+            <p>No responses found. Please take an exam first.</p>
+            <button onclick="window.location.href='index.html'" class="btn-primary">
+              Take an Exam
+            </button>
+          </div>
+        `;
+          return;
+        }
+
+        responses.forEach((response, index) => {
+          const questionClass = response.correct ? "correct" : "incorrect";
+          const statusText = response.correct ? "Correct" : "Incorrect";
+          const statusClass = response.correct
+            ? "correct-answer"
+            : "incorrect-answer";
+          const statusIcon = response.correct
+            ? '<i class="fas fa-check-circle"></i>'
+            : '<i class="fas fa-times-circle"></i>';
+
+          // Create options HTML
+          let optionsHTML = "";
+          for (const [key, value] of Object.entries(response.options)) {
+            const isSelected = key === response.selectedAnswer;
+            const isCorrect = key === response.correctAnswer;
+
+            let optionClass = "";
+            if (isSelected) optionClass += " selected-option";
+            if (isCorrect) optionClass += " correct-option";
+
+            optionsHTML += `
+            <div class="option-item${optionClass}">
+              ${key}: ${value}
+              ${
+                isSelected
+                  ? ' <span class="selected-marker"><i class="fas fa-user-check"></i> Your Answer</span>'
+                  : ""
+              }
+              ${
+                isCorrect
+                  ? ' <span class="correct-marker"><i class="fas fa-check"></i> Correct Answer</span>'
+                  : ""
+              }
+            </div>
+          `;
+          }
+
+          // Add explanation section
+          let explanationHTML = "";
+          if (response.explanation) {
+            explanationHTML = `
+            <div class="explanation">
+              <h4 class="explanation-title">
+                <i class="fas fa-lightbulb"></i> Explanation:
+              </h4>
+              <p>${response.explanation}</p>
+            </div>
+          `;
+          }
+
+          const questionHTML = `
+          <div class="question-review ${questionClass}" data-status="${questionClass}">
+            <p class="question-text"><strong>Question ${response.questionNumber}:</strong> ${response.questionText}</p>
+            <div class="options-container">
+              ${optionsHTML}
+            </div>
+            <div class="answer-status">
+              <p class="${statusClass}">${statusIcon} ${statusText}</p>
+            </div>
+            ${explanationHTML}
+          </div>
+        `;
+
+          questionsReviewDiv.innerHTML += questionHTML;
+        });
+      }
+
+      function setupFilterButtons() {
+        const filterButtons = document.querySelectorAll(".filter-btn");
+
+        filterButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            // Remove active class from all buttons
+            filterButtons.forEach((btn) => btn.classList.remove("active"));
+
+            // Add active class to clicked button
+            this.classList.add("active");
+
+            // Get filter value
+            const filter = this.getAttribute("data-filter");
+
+            // Filter questions
+            const questions = document.querySelectorAll(".question-review");
+
+            questions.forEach((question) => {
+              if (filter === "all") {
+                question.style.display = "block";
+              } else {
+                if (question.getAttribute("data-status") === filter) {
+                  question.style.display = "block";
+                } else {
+                  question.style.display = "none";
+                }
+              }
+            });
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

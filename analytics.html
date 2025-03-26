@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BINA Pro Analytics - Coming Soon</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="../Bida2.png" />
+    <meta
+      name="description"
+      content="BINA Pro Analytics Dashboard - Advanced performance tracking coming soon"
+    />
+    <link rel="apple-touch-icon" href="../logo.png" />
+    <meta name="theme-color" content="#f7b500" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="premium-badge">Pro Version</div>
+
+    <div class="container">
+      <div class="header">
+        <img src="../logo.png" alt="BINA Logo" />
+        <h1>Analytics Dashboard</h1>
+        <div id="user-welcome">
+          <h3>Welcome, <span id="user-name">Student</span></h3>
+        </div>
+        <div class="pro-navigation">
+          <a href="index.html" class="nav-link">
+            <i class="fas fa-home"></i> Home
+          </a>
+          <a href="history.html" class="nav-link">
+            <i class="fas fa-history"></i> Exam History
+          </a>
+        </div>
+      </div>
+
+      <div class="coming-soon-container">
+        <div class="coming-soon-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h2>Advanced Analytics Coming Soon!</h2>
+        <p>
+          We're working hard to bring you detailed performance analytics with:
+        </p>
+
+        <div class="feature-preview">
+          <div class="feature-item">
+            <i class="fas fa-chart-pie"></i>
+            <h4>Subject Performance</h4>
+            <p>Detailed breakdown of your performance across all subjects</p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-brain"></i>
+            <h4>Topic Analysis</h4>
+            <p>Identify your strengths and areas for improvement by topic</p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-chart-bar"></i>
+            <h4>Progress Tracking</h4>
+            <p>Monitor your improvement over time with visual charts</p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-lightbulb"></i>
+            <h4>Smart Recommendations</h4>
+            <p>
+              Get personalized study recommendations based on your performance
+            </p>
+          </div>
+        </div>
+
+        <div class="progress-indicator">
+          <div class="progress-label">Development Progress</div>
+          <div class="progress-bar">
+            <div class="progress-bar-fill" style="width: 25%"></div>
+          </div>
+          <div class="progress-percentage">25% Complete</div>
+        </div>
+
+        <p class="eta">Expected release: Q4 2025</p>
+
+        <div class="dashboard-actions">
+          <button
+            onclick="window.location.href='index.html'"
+            class="submit-btn"
+          >
+            <i class="fas fa-home"></i> Back to Home
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Check if user is logged in
+        const userName = localStorage.getItem("userName");
+        if (!userName) {
+          window.location.href = "../Entrance/login.html";
+          return;
+        }
+
+        // Set user name
+        document.getElementById("user-name").textContent = userName;
+      });
+    </script>
+  </body>
+</html>
