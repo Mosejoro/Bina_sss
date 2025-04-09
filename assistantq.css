@@ -181,6 +181,12 @@
     max-width: 180px;
     font-size: 12px;
     padding: 10px;
+    position: absolute;
+    left: 6rem;
+    bottom: 22rem;
+    opacity: 0;
+    transform: translateX(-20px) scale(0.95);
+    transition: opacity 0.5s ease, transform 0.5s ease;
   }
 
   .speech-bubble:before {
