@@ -170,7 +170,9 @@
   .bina-senior-assistant .bina-character {
     width: 70px;
   }
-
+  .speech-bubble {
+    left: 4rem;
+  }
   .speech-bubble-container {
     left: 80px;
     bottom: 40px;
