@@ -1,6 +1,7 @@
 /* BINA Senior Design System */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Salsa&display=swap");
 
 /* Root Variables - Using BINA Senior brand colors */
 :root {
@@ -47,7 +48,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Inter", "Poppins", sans-serif;
+  font-family: "Salsa", "Poppins", sans-serif;
 }
 
 /* Background Animation */
@@ -189,7 +190,7 @@ body {
   position: fixed;
   top: 10px;
   left: 10px;
-  background: var(--primary-color);
+  background: var(--primary-dark);
   color: white;
   padding: 5px 10px;
   border-radius: 20px;
@@ -812,7 +813,7 @@ a:hover {
 }
 
 .premium-badge {
-  background: linear-gradient(135deg, #ffd700, #ffa500);
+  background: var(--primary-color);
   color: white;
   font-size: 12px;
   font-weight: 600;
@@ -820,7 +821,7 @@ a:hover {
   border-radius: 20px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 2px 4px rgba(255, 165, 0, 0.3);
+  box-shadow: 0 2px 4px var(--primary-dark);
 }
 
 .selected-stream-card {
@@ -984,4 +985,12 @@ a:hover {
   font-size: 30px;
   text-align: center;
   font-weight: 800;
+}
+.coming-soon-container {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.coming-soon-icon {
+  font-size: 5rem;
 }

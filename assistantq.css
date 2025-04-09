@@ -36,8 +36,8 @@
 /* Enhanced Speech Bubble */
 .speech-bubble {
   position: absolute;
-  left: 80px;
-  bottom: 60px;
+  left: 6rem;
+  bottom: 26rem;
   opacity: 0;
   transform: translateX(-20px) scale(0.95);
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -68,7 +68,7 @@
 }
 
 /* Speech bubble tail */
-.speech-bubble:before {
+/* .speech-bubble:before {
   content: "";
   position: absolute;
   left: -15px;
@@ -91,7 +91,7 @@
   border-style: solid;
   border-width: 15px 15px 15px 0;
   border-color: transparent #ffffff transparent transparent;
-}
+} */
 
 /* Assistant toggle button */
 .assistant-toggle {

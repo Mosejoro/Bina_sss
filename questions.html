@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BINA Senior - Practice Exam</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="assistantq.css" />
     <link rel="icon" href="favicon.png" />
     <meta
       name="description"
@@ -18,7 +19,7 @@
     />
   </head>
   <body>
-    <div class="premium-badge">Premium Version</div>
+    <div class="premium-badge">Senior Secondary School</div>
 
     <div class="container">
       <div
@@ -75,17 +76,14 @@
         // Display exam info
         document.getElementById("exam-info").innerHTML = `
       <img src="logo.png" alt="BINA Senior Logo">
-      <h3 class="head">Student: ${userFullName}</h3>
-      <h3 class="head">Subject: ${subject.replace(/_/g, " ")}</h3>
-      <h3 class="head">Stream: ${
-        stream.charAt(0).toUpperCase() + stream.slice(1)
-      }</h3>
-      <h2 class="Warn">IF THIS INFORMATION IS WRONG <a class="btn-link" href="index.html"> Go Back</a></h2>
+     
     `;
 
         // Auto fetch questions
         fetchQuestions(stream, subject);
       });
     </script>
+    <script src="Nocopy.js"></script>
+    <script src="block.js"></script>
   </body>
 </html>

@@ -13,6 +13,7 @@
       content="BINA Senior - Advanced Online Preparation System for SSCE Students"
     />
     <link rel="apple-touch-icon" href="logo.png" />
+    <link rel="icon" href="logo.png" />
     <meta name="theme-color" content="#1e88e5" />
     <link rel="stylesheet" href="styles.css" />
     <link
@@ -22,7 +23,7 @@
     <link rel="stylesheet" href="assistant.css" />
   </head>
   <body>
-    <div class="premium-badge">BINA Senior</div>
+    <div class="premium-badge">Senior Secondary School</div>
 
     <!-- User Profile and Logout -->
     <div class="user-profile">
@@ -33,14 +34,8 @@
       </button>
     </div>
 
-    <!-- Assistant Toggle Button -->
-    <div class="assistant-toggle" id="assistant-toggle">
-      <i class="fas fa-robot"></i>
-      <i class="fas fa-times"></i>
-    </div>
-
-    <!-- BINA Senior Assistant (initially hidden) -->
-    <div class="bina-senior-assistant" id="bina-senior-assistant">
+    <!-- BINA Senior Assistant (now automatically visible) -->
+    <div class="bina-senior-assistant visible" id="bina-senior-assistant">
       <div class="character-wrapper">
         <img
           src="assets/standing.png"
@@ -57,7 +52,7 @@
     <div class="container">
       <div class="header">
         <img src="logo.png" alt="BINA Senior Logo" /><br />
-        <h1>BINA Senior Preparation System</h1>
+        <h1>Senior Secondary Preparation System</h1>
         <div id="welcome-message">
           <!-- Welcome message will be inserted here -->
         </div>
@@ -148,7 +143,7 @@
           <div class="feature-item">
             <i class="fa-solid fa-clipboard-question"></i>
             <h4>SSCE Format</h4>
-            <p>Questions follow the exact SSCE examination format</p>
+            <p>Questions follow the exact SSCE examination Syllabus</p>
           </div>
 
           <div class="feature-item">
@@ -169,7 +164,8 @@
         </div>
       </div>
     </div>
-
+    <script src="Nocopy.js"></script>
+    <script src="block.js"></script>
     <script>
       // Check if user is logged in
       document.addEventListener("DOMContentLoaded", function () {
@@ -401,7 +397,6 @@
       let premiumMessages = [];
       let currentMessageIndex = 0;
       let messageInterval;
-      let assistantVisible = false;
 
       function initPremiumMessages() {
         const userFullName =
@@ -432,11 +427,7 @@
         // Display first message
         const messageElement = document.getElementById("bina-senior-message");
         messageElement.textContent = premiumMessages[0];
-
-        // Set up toggle button
-        document
-          .getElementById("assistant-toggle")
-          .addEventListener("click", toggleAssistant);
+        messageElement.style.opacity = 1;
 
         // Make character clickable to show next message immediately
         document
@@ -444,34 +435,11 @@
           .addEventListener("click", () => {
             showNextMessage();
           });
-      }
 
-      function toggleAssistant() {
-        const assistant = document.getElementById("bina-senior-assistant");
-        const toggle = document.getElementById("assistant-toggle");
-
-        if (assistantVisible) {
-          // Hide assistant
-          assistant.classList.remove("visible");
-          toggle.classList.remove("active");
-
-          // Clear the message interval
-          clearInterval(messageInterval);
-        } else {
-          // Show assistant
-          assistant.classList.add("visible");
-          toggle.classList.add("active");
-
-          // Reset message opacity
-          document.getElementById("bina-senior-message").style.opacity = 1;
-
-          // Start message rotation - every 5 seconds
-          messageInterval = setInterval(() => {
-            showNextMessage();
-          }, 5000); // 5 seconds
-        }
-
-        assistantVisible = !assistantVisible;
+        // Start message rotation automatically - every 5 seconds
+        messageInterval = setInterval(() => {
+          showNextMessage();
+        }, 5000); // 5 seconds
       }
 
       function showNextMessage() {

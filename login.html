@@ -24,20 +24,31 @@
           <input type="email" id="loginEmail" placeholder=" " required />
           <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
         </div>
-        <div class="input-group">
+        <div class="input-group" style="position: relative">
           <input type="password" id="loginPassword" placeholder=" " required />
           <label for="loginPassword"
             ><i class="fas fa-lock"></i> Password</label
           >
+          <i
+            class="fas fa-eye-slash"
+            id="togglePassword"
+            style="
+              position: absolute;
+              top: 50%;
+              right: 10px;
+              transform: translateY(-50%);
+              cursor: pointer;
+            "
+          ></i>
         </div>
+
         <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
       </form>
       <p class="alt-link">
-        Don't have an account? <a href="signup.html">Sign Up</a>
+        Haven’t paid?
+        <a href="https://binapayment.vercel.app" target="_blank">Click here</a>
       </p>
-      <p class="alt-link">
-        <a href="admin-login.html">Admin Login</a>
-      </p>
+
       <p class="message" id="loginMessage"></p>
     </div>
 
@@ -193,6 +204,19 @@
                 '<i class="fas fa-sign-in-alt"></i> Login';
               document.querySelector("button").disabled = false;
             });
+        });
+      // Password visibility toggle
+      document
+        .getElementById("togglePassword")
+        .addEventListener("click", function () {
+          const passwordInput = document.getElementById("loginPassword");
+          const type =
+            passwordInput.getAttribute("type") === "password"
+              ? "text"
+              : "password";
+          passwordInput.setAttribute("type", type);
+          this.classList.toggle("fa-eye-slash");
+          this.classList.toggle("fa-eye");
         });
     </script>
   </body>
