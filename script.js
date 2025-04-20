@@ -88,7 +88,7 @@ function displayQuestions(data, subject, stream) {
   const shuffledQuestionRows = shuffleArray(questionRows);
 
   // Limit to 50 questions for SSCE format
-  const limitedQuestionRows = shuffledQuestionRows.slice(0, 30);
+  const limitedQuestionRows = shuffledQuestionRows.slice(0, 20);
 
   // Get username from localStorage
   const userFullName =
