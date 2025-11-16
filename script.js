@@ -649,7 +649,7 @@ font-weight: bold;">${grade}</span></h3>
 }
 
 // Timer functionality
-const examDuration = 60 * 60; // 60 minutes in seconds for SSCE format
+const examDuration = 30 * 60; // 60 minutes in seconds for SSCE format
 let timerInterval;
 
 // Update the timer's time-up handler to ensure it properly submits
