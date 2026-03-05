@@ -100,9 +100,9 @@ function displayQuestions(data, subject, stream) {
   questionsDiv.innerHTML = `
      <div class="exam-header">
      <h3>Student: ${userFullName}</h3>
-    <h3>Subject: ${subject.replace(/_/g, " ")}</h3>
-    
+    <h3>Subject: ${subject.replace(/_/g, " ")}</h3> 
     <h3 class="Warn">Answer all questions before the time runs out.</h3>
+     <h3 class="Warnt">Click on havana to get hints</h3>
   </div>
   `;
 

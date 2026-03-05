@@ -715,7 +715,10 @@ body {
   font-size: 0.9rem;
   margin: 1rem 0;
 }
-
+.Warnt{
+  color: green;
+  font-weight: 900;
+}
 /* Links */
 a {
   color: var(--primary-color);
