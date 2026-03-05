@@ -587,7 +587,7 @@ body {
 /* Hint counter styling */
 .hint-counter {
   position: fixed;
-  top: 26px;
+  top: 46px;
   left: 16px;
   background: rgba(30, 136, 229, 0.1);
   border: 1px solid rgba(30, 136, 229, 0.2);
