@@ -99,9 +99,9 @@ function displayQuestions(data, subject, stream) {
   // Add exam metadata section
   questionsDiv.innerHTML = `
      <div class="exam-header">
+     <h3>Student: ${userFullName}</h3><br>
     <h3>Subject: ${subject.replace(/_/g, " ")}</h3>
-    <h4>Stream: ${stream.charAt(0).toUpperCase() + stream.slice(1)}</h4>
-    <h3>Student: ${userFullName}</h3>
+    
     <h3 class="Warn">Answer all questions before the time runs out.</h3>
   </div>
   `;
