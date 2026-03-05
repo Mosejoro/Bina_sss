@@ -589,18 +589,19 @@ body {
   position: fixed;
   top: 106px;
   left: 16px;
-  background: rgba(30, 136, 229, 0.1);
+  background:black;
   border: 1px solid rgba(30, 136, 229, 0.2);
   padding: 8px 15px;
   border-radius: 20px;
   display: inline-block;
   font-size: 0.9rem;
-  color: var(--primary-color);
+  color: white;
   z-index: 1000;
 }
 
 .hint-counter span {
   font-weight: 600;
+  color: rgb(30, 136, 299);
 }
 
 .hint-counter-warning {
