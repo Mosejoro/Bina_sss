@@ -179,7 +179,7 @@
             .then(() => {
               // Only execute this for non-admin users
               if (localStorage.getItem("userRole") !== "admin") {
-                messageElement.textContent = "Login successful! Redirecting...";
+                messageElement.textContent = "Login successful!";
                 messageElement.style.color = "green";
 
                 // Redirect to home page after successful login
