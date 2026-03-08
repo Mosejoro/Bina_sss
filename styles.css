@@ -1001,3 +1001,14 @@ a:hover {
 .coming-soon-icon {
   font-size: 5rem;
 }
+.question-image-container {
+  width: 100%;
+  max-width: 100%;
+}
+
+.question-image {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  display: block;
+}

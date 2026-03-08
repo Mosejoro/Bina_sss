@@ -409,7 +409,7 @@ function setupHintCharacters() {
         // Otherwise, switch back to standing after 2 seconds
         setTimeout(() => {
           characterImg.src = "assets/standing.png";
-        }, 5000);
+        }, 24000);
       }
 
       // Hide the bubble after 5 seconds
