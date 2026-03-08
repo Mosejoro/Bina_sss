@@ -409,13 +409,13 @@ function setupHintCharacters() {
         // Otherwise, switch back to standing after 2 seconds
         setTimeout(() => {
           characterImg.src = "assets/standing.png";
-        }, 24000);
+        }, 9000);
       }
 
       // Hide the bubble after 5 seconds
       setTimeout(() => {
         speechBubble.classList.remove("show");
-      }, 5000);
+      }, 9000);
     });
   });
 
